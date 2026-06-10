@@ -9,28 +9,28 @@ from app.models.schemas import AIExplanation, Finding
 
 logger = logging.getLogger(__name__)
 
-SYSTEM_PROMPT = """你是一名智能合约安全审计助手。你的任务是将 Slither 静态分析工具输出的技术告警翻译为开发者易懂的中文说明。
+SYSTEM_PROMPT = """You are a smart contract security audit assistant. Your task is to translate technical alerts from the Slither static analysis tool into clear explanations for developers.
 
-严格要求：
-1. 只基于提供的 Slither finding 进行解释，不得捏造未报告的问题
-2. 不确定时明确标注「需人工复核」
-3. 使用中文输出，技术术语（如 reentrancy）可保留英文
-4. 回复必须是合法 JSON，不要包含 markdown 代码块"""
+Strict requirements:
+1. Only explain based on the provided Slither finding; do not invent issues that were not reported
+2. When uncertain, explicitly state "manual review required"
+3. Write in English; technical terms (e.g. reentrancy) may remain as-is
+4. Respond with valid JSON only; do not wrap in markdown code blocks"""
 
-USER_PROMPT_TEMPLATE = """请解释以下 Slither 安全发现：
+USER_PROMPT_TEMPLATE = """Explain the following Slither security finding:
 
-检测器：{detector}
-严重级别：{severity}
-描述：{description}
-合约：{contract}
-函数：{function}
-位置：{location}
+Detector: {detector}
+Severity: {severity}
+Description: {description}
+Contract: {contract}
+Function: {function}
+Location: {location}
 
-请以 JSON 格式回复，包含以下字段：
-- title: 简短中文标题（不超过50字）
-- problem: 问题说明（面向开发者）
-- impact: 潜在影响
-- recommendation: 具体修复建议"""
+Reply in JSON with these fields:
+- title: short English title (max 50 characters)
+- problem: what is wrong (developer-facing)
+- impact: potential impact
+- recommendation: concrete fix guidance"""
 
 
 async def explain_finding(
@@ -44,8 +44,8 @@ async def explain_finding(
         return AIExplanation(
             title=finding.detector,
             problem=finding.description,
-            impact="未配置 AI API Key，无法生成解释",
-            recommendation="请配置 OpenAI 兼容 API Key 后重试",
+            impact="No AI API key configured; explanation unavailable",
+            recommendation="Configure an OpenAI-compatible API key and retry",
             ai_success=False,
         )
 
@@ -59,9 +59,9 @@ async def explain_finding(
         detector=finding.detector,
         severity=finding.severity.value,
         description=finding.description,
-        contract=finding.contract or "未知",
-        function=finding.function or "未知",
-        location=location or "未知",
+        contract=finding.contract or "unknown",
+        function=finding.function or "unknown",
+        location=location or "unknown",
     )
 
     url = (base_url or settings.openai_base_url).rstrip("/") + "/chat/completions"
@@ -102,8 +102,8 @@ async def explain_finding(
         return AIExplanation(
             title=finding.detector,
             problem=finding.description,
-            impact="AI 解释生成失败，以下为 Slither 原始描述",
-            recommendation="请人工查阅 Slither 文档或寻求安全专家帮助",
+            impact="AI explanation failed; showing original Slither description below",
+            recommendation="Consult Slither documentation or a security expert",
             ai_success=False,
         )
 

@@ -16,7 +16,7 @@ def _is_safe_path(base: Path, target: Path) -> bool:
 
 def validate_zip_file(file: UploadFile) -> None:
     if not file.filename or not file.filename.lower().endswith(".zip"):
-        raise HTTPException(status_code=400, detail="仅支持 .zip 格式的项目包")
+        raise HTTPException(status_code=400, detail="Only .zip project archives are supported")
 
 
 async def save_and_extract_zip(file: UploadFile, job_dir: Path) -> Path:
@@ -27,10 +27,10 @@ async def save_and_extract_zip(file: UploadFile, job_dir: Path) -> Path:
     if len(content) > max_bytes:
         raise HTTPException(
             status_code=400,
-            detail=f"文件大小超过限制（最大 {settings.max_upload_mb} MB）",
+            detail=f"File exceeds size limit (max {settings.max_upload_mb} MB)",
         )
     if len(content) == 0:
-        raise HTTPException(status_code=400, detail="上传的文件为空")
+        raise HTTPException(status_code=400, detail="Uploaded file is empty")
 
     zip_path = job_dir / "upload.zip"
     zip_path.write_bytes(content)
@@ -48,22 +48,20 @@ async def save_and_extract_zip(file: UploadFile, job_dir: Path) -> Path:
 
                 name = info.filename.replace("\\", "/")
                 if name.startswith("/") or ".." in Path(name).parts:
-                    raise HTTPException(status_code=400, detail="ZIP 包含非法路径")
+                    raise HTTPException(status_code=400, detail="ZIP contains invalid paths")
 
-                # Skip macOS metadata
                 if name.startswith("__MACOSX/") or name.endswith("/.DS_Store"):
                     continue
 
                 target = project_dir / name
                 if not _is_safe_path(project_dir, target):
-                    raise HTTPException(status_code=400, detail="ZIP 包含非法路径")
+                    raise HTTPException(status_code=400, detail="ZIP contains invalid paths")
 
                 target.parent.mkdir(parents=True, exist_ok=True)
 
-                # Reject symlinks (external_attr on Unix)
                 is_symlink = (info.external_attr >> 16) & 0o120000 == 0o120000
                 if is_symlink:
-                    raise HTTPException(status_code=400, detail="ZIP 不允许包含符号链接")
+                    raise HTTPException(status_code=400, detail="ZIP must not contain symbolic links")
 
                 with zf.open(info) as src, open(target, "wb") as dst:
                     dst.write(src.read())
@@ -72,10 +70,10 @@ async def save_and_extract_zip(file: UploadFile, job_dir: Path) -> Path:
                     sol_files.append(target)
 
     except zipfile.BadZipFile as exc:
-        raise HTTPException(status_code=400, detail="无效的 ZIP 文件") from exc
+        raise HTTPException(status_code=400, detail="Invalid ZIP file") from exc
 
     if not sol_files:
-        raise HTTPException(status_code=400, detail="ZIP 中未找到任何 .sol 文件")
+        raise HTTPException(status_code=400, detail="ZIP contains no .sol files")
 
     return _resolve_project_root(project_dir)
 

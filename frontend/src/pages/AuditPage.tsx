@@ -14,11 +14,11 @@ import FindingCard from "../components/FindingCard";
 const POLL_INTERVAL = 2000;
 
 const STATUS_LABELS: Record<string, string> = {
-  pending: "排队中",
-  running_slither: "Slither 分析中",
-  running_ai: "AI 解释中",
-  completed: "已完成",
-  failed: "失败",
+  pending: "Queued",
+  running_slither: "Running Slither",
+  running_ai: "AI explaining",
+  completed: "Completed",
+  failed: "Failed",
 };
 
 export default function AuditPage() {
@@ -58,7 +58,7 @@ export default function AuditPage() {
         timer = setTimeout(poll, POLL_INTERVAL);
       } catch (err) {
         if (!cancelled) {
-          setError(err instanceof Error ? err.message : "加载失败");
+          setError(err instanceof Error ? err.message : "Failed to load");
         }
       }
     }
@@ -79,20 +79,20 @@ export default function AuditPage() {
   return (
     <div className="container">
       <div style={{ marginBottom: "1.5rem" }}>
-        <Link to="/" style={{ fontSize: "0.9rem" }}>← 返回上传</Link>
+        <Link to="/" style={{ fontSize: "0.9rem" }}>← Back to upload</Link>
       </div>
 
       <div className="card" style={{ marginBottom: "1.5rem" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <h1 style={{ fontSize: "1.35rem", fontWeight: 700 }}>
-              审计任务
+              Audit Task
             </h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", fontFamily: "var(--mono)", marginTop: "0.25rem" }}>
               {taskId}
             </p>
             {status?.filename && (
-              <p style={{ marginTop: "0.5rem" }}>文件：{status.filename}</p>
+              <p style={{ marginTop: "0.5rem" }}>File: {status.filename}</p>
             )}
           </div>
           {status && (
@@ -115,7 +115,7 @@ export default function AuditPage() {
               </p>
               {status.duration_sec != null && (
                 <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
-                  耗时 {status.duration_sec}s
+                  Duration {status.duration_sec}s
                 </p>
               )}
             </div>
@@ -146,17 +146,17 @@ export default function AuditPage() {
                 verticalAlign: "middle",
               }}
             />
-            正在处理，请稍候...
+            Processing, please wait...
             <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
           </div>
         )}
 
         {status?.status === "failed" && (
           <div className="error-box" style={{ marginTop: "1rem" }}>
-            {status.error || "审计失败"}
+            {status.error || "Audit failed"}
             <div style={{ marginTop: "0.75rem" }}>
               <Link to="/">
-                <button className="btn-secondary">重新上传</button>
+                <button className="btn-secondary">Upload again</button>
               </Link>
             </div>
           </div>
@@ -172,12 +172,12 @@ export default function AuditPage() {
             }}
           >
             {[
-              { label: "高危", value: status.summary.high, color: "var(--high)" },
-              { label: "中危", value: status.summary.medium, color: "var(--medium)" },
-              { label: "低危", value: status.summary.low, color: "var(--low)" },
-              { label: "信息", value: status.summary.informational, color: "var(--info)" },
-              { label: "优化", value: status.summary.optimization, color: "var(--opt)" },
-              { label: "合计", value: status.summary.total, color: "var(--text)" },
+              { label: "High", value: status.summary.high, color: "var(--high)" },
+              { label: "Medium", value: status.summary.medium, color: "var(--medium)" },
+              { label: "Low", value: status.summary.low, color: "var(--low)" },
+              { label: "Info", value: status.summary.informational, color: "var(--info)" },
+              { label: "Opt", value: status.summary.optimization, color: "var(--opt)" },
+              { label: "Total", value: status.summary.total, color: "var(--text)" },
             ].map((item) => (
               <div
                 key={item.label}
@@ -209,20 +209,20 @@ export default function AuditPage() {
               className={activeTab === "findings" ? "btn-primary" : "btn-secondary"}
               onClick={() => setActiveTab("findings")}
             >
-              发现项 ({findings.length})
+              Findings ({findings.length})
             </button>
             <button
               className={activeTab === "report" ? "btn-primary" : "btn-secondary"}
               onClick={() => setActiveTab("report")}
             >
-              审计报告
+              Audit Report
             </button>
             <a
               href={getReportDownloadUrl(taskId)}
               download
               style={{ marginLeft: "auto" }}
             >
-              <button className="btn-secondary">下载报告 (.md)</button>
+              <button className="btn-secondary">Download report (.md)</button>
             </a>
           </div>
 
@@ -230,7 +230,7 @@ export default function AuditPage() {
             <div>
               {findings.length === 0 ? (
                 <div className="card" style={{ textAlign: "center", color: "var(--text-muted)" }}>
-                  Slither 未检测到安全问题
+                  No security issues detected by Slither
                 </div>
               ) : (
                 findings.map((f) => <FindingCard key={f.id} finding={f} />)

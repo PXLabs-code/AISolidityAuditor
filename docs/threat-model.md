@@ -1,23 +1,23 @@
-# 威胁模型（ZIP 上传）
+# Threat model (ZIP upload)
 
-## 攻击面
+## Attack surface
 
-| 向量 | 风险 | 缓解措施 |
-|------|------|----------|
-| ZIP 路径穿越 (`../`) | 写入系统目录 | 解压前校验路径，拒绝 `..` 与绝对路径 |
-| ZIP 符号链接 | 读取/写入任意文件 | 检测 Unix symlink 属性并拒绝 |
-| ZIP 炸弹 | 磁盘/内存耗尽 | 限制上传 10 MB；解压后大小监控（Post-MVP） |
-| 恶意二进制 | 执行恶意代码 | 仅接受 `.sol` 分析；不解压可执行文件到可执行路径 |
-| API Key 泄露 | 费用/滥用 | Key 不落盘、不写日志；HTTPS 部署建议 |
-| 拒绝服务 | 资源耗尽 | Slither 120s 超时；并发 Semaphore(3)；Rate Limit |
+| Vector | Risk | Mitigation |
+|--------|------|------------|
+| ZIP path traversal (`../`) | Write outside job dir | Path validation; reject `..` and absolute paths |
+| ZIP symbolic links | Read/write arbitrary files | Detect Unix symlink attributes and reject |
+| ZIP bomb | Disk/memory exhaustion | 10 MB upload limit; post-extract size monitoring (post-MVP) |
+| Malicious binaries | Code execution | Only `.sol` analysis; no execution of extracted binaries |
+| API key leakage | Cost/abuse | Keys not persisted or logged; HTTPS recommended in production |
+| Denial of service | Resource exhaustion | Slither 120s timeout; Semaphore(3); rate limiting |
 
-## 信任边界
+## Trust boundaries
 
-- **不可信**：用户上传的 ZIP 内容
-- **可信**：Slither、solc（预装在 Docker 镜像中）
-- **半可信**：OpenAI API（用户自备 Key）
+- **Untrusted**: user-uploaded ZIP contents
+- **Trusted**: Slither, solc (preinstalled in Docker image)
+- **Semi-trusted**: OpenAI API (user-provided key)
 
-## 数据保留
+## Data retention
 
-- 任务目录默认保留 24 小时，之后自动清理
-- 无用户账户，无长期 PII 存储
+- Task directories retained for 24 hours by default, then auto-cleaned
+- No user accounts; no long-term PII storage

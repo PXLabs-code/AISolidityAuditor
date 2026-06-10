@@ -13,7 +13,7 @@ export default function HomePage() {
 
   function handleFile(f: File) {
     if (!f.name.toLowerCase().endsWith(".zip")) {
-      setError("仅支持 .zip 格式的 Solidity 项目包");
+      setError("Only .zip Solidity project archives are supported");
       return;
     }
     setFile(f);
@@ -29,7 +29,7 @@ export default function HomePage() {
 
   async function onSubmit() {
     if (!file) {
-      setError("请先选择 ZIP 文件");
+      setError("Please select a ZIP file first");
       return;
     }
     setLoading(true);
@@ -38,7 +38,7 @@ export default function HomePage() {
       const { task_id } = await createAudit(file, apiKey || undefined);
       navigate(`/audit/${task_id}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "上传失败");
+      setError(err instanceof Error ? err.message : "Upload failed");
     } finally {
       setLoading(false);
     }
@@ -48,11 +48,11 @@ export default function HomePage() {
     <div className="container">
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
         <h1 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: "0.5rem" }}>
-          AI 智能合约审计
+          AI Smart Contract Audit
         </h1>
         <p style={{ color: "var(--text-muted)", maxWidth: 560, margin: "0 auto" }}>
-          上传 Solidity 项目 ZIP，自动运行 Slither 静态分析，
-          并由 AI 将安全问题翻译为易懂的中文说明，生成审计报告。
+          Upload a Solidity project ZIP for Slither static analysis and AI-powered
+          explanations, then get an audit report automatically.
         </p>
       </div>
 
@@ -86,15 +86,15 @@ export default function HomePage() {
             <>
               <div style={{ fontWeight: 600 }}>{file.name}</div>
               <div style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "0.25rem" }}>
-                {(file.size / 1024).toFixed(1)} KB · 点击更换文件
+                {(file.size / 1024).toFixed(1)} KB · Click to change file
               </div>
             </>
           ) : (
             <>
               <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>📦</div>
-              <div style={{ fontWeight: 500 }}>拖拽 ZIP 到此处，或点击选择</div>
+              <div style={{ fontWeight: 500 }}>Drag a ZIP here, or click to browse</div>
               <div style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "0.25rem" }}>
-                最大 10 MB，需包含 .sol 文件
+                Max 10 MB, must include .sol files
               </div>
             </>
           )}
@@ -102,7 +102,7 @@ export default function HomePage() {
 
         <div style={{ marginTop: "1.25rem" }}>
           <label style={{ display: "block", marginBottom: "0.4rem", fontSize: "0.9rem" }}>
-            OpenAI API Key（可选，用于 AI 解释）
+            OpenAI API Key (optional, for AI explanations)
           </label>
           <input
             type="password"
@@ -111,7 +111,7 @@ export default function HomePage() {
             onChange={(e) => setApiKey(e.target.value)}
           />
           <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginTop: "0.35rem" }}>
-            Key 仅用于当次请求，不会存储。也可在服务端 .env 中配置。
+            Key is used only for this request and is not stored. You can also set it in server .env.
           </p>
         </div>
 
@@ -123,7 +123,7 @@ export default function HomePage() {
           disabled={loading || !file}
           onClick={onSubmit}
         >
-          {loading ? "上传中..." : "开始审计"}
+          {loading ? "Uploading..." : "Start Audit"}
         </button>
       </div>
     </div>

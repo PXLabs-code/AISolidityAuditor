@@ -1,20 +1,20 @@
-# 示例合约
+# Example contracts
 
-`reentrancy/Reentrancy.sol` 包含经典的 reentrancy 漏洞样例，供 Slither 检测与 MVP 验收使用。
+`reentrancy/Reentrancy.sol` contains a classic reentrancy vulnerability sample for Slither detection and MVP acceptance testing.
 
-## 预置 ZIP（推荐）
+## Bundled ZIP (recommended)
 
-仓库已包含可直接上传的示例包：
+The repository includes a ready-to-upload sample:
 
 ```
 examples/reentrancy-example.zip
 ```
 
-用于 README 快速开始、Demo 录屏（见 [docs/demo-script.md](../docs/demo-script.md)）及 CI 集成测试。
+Use it for README quick start, demo recording (see [docs/demo-script.md](../docs/demo-script.md)), and CI integration tests.
 
-## 重新打包
+## Rebuild from source
 
-如需从源码重新生成 ZIP：
+To regenerate the ZIP from source:
 
 ```bash
 # Linux / macOS
@@ -25,4 +25,4 @@ cd examples/reentrancy
 Compress-Archive -Path * -DestinationPath ..\reentrancy-example.zip -Force
 ```
 
-上传 `reentrancy-example.zip` 到 Web 界面即可完成端到端验收。
+Upload `reentrancy-example.zip` in the web UI to complete end-to-end acceptance.

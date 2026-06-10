@@ -28,12 +28,11 @@ async def test_explain_finding_mock_response():
                 "message": {
                     "content": json.dumps(
                         {
-                            "title": "重入攻击风险",
-                            "problem": "外部调用在状态更新之前执行",
-                            "impact": "攻击者可反复提取资金",
-                            "recommendation": "使用 checks-effects-interactions 模式",
-                        },
-                        ensure_ascii=False,
+                            "title": "Reentrancy risk",
+                            "problem": "External call executes before state update",
+                            "impact": "Attacker may drain funds repeatedly",
+                            "recommendation": "Follow checks-effects-interactions pattern",
+                        }
                     )
                 }
             }
@@ -50,7 +49,7 @@ async def test_explain_finding_mock_response():
         result = await explain_finding(_sample_finding(), api_key="test-key")
 
     assert result.ai_success is True
-    assert result.title == "重入攻击风险"
+    assert result.title == "Reentrancy risk"
     assert "checks-effects-interactions" in result.recommendation
 
 
@@ -61,7 +60,7 @@ async def test_explain_finding_without_api_key():
         result = await explain_finding(_sample_finding(), api_key="")
 
     assert result.ai_success is False
-    assert "API Key" in result.impact
+    assert "API key" in result.impact
 
 
 @pytest.mark.asyncio

@@ -13,10 +13,10 @@ def _finding_with_ai() -> Finding:
         file="Reentrancy.sol",
         line=15,
         ai=AIExplanation(
-            title="重入攻击风险",
-            problem="外部调用在状态更新前",
-            impact="资金可被重复提取",
-            recommendation="先更新状态再转账",
+            title="Reentrancy risk",
+            problem="External call before state update",
+            impact="Funds may be drained repeatedly",
+            recommendation="Update state before external transfer",
             ai_success=True,
         ),
     )
@@ -40,11 +40,11 @@ def test_generate_report():
     )
     report = generate_report(meta, [_finding_with_ai()], slither_version="0.10.4")
 
-    assert "# 智能合约审计报告" in report
+    assert "# Smart Contract Audit Report" in report
     assert "reentrancy-example.zip" in report
-    assert "重入攻击风险" in report
+    assert "Reentrancy risk" in report
     assert "reentrancy-eth" in report
-    assert "免责声明" in report
+    assert "Disclaimer" in report
     assert "/api/v1/audits/" in report
     assert "/slither" in report
 
@@ -58,4 +58,4 @@ def test_generate_report_empty_findings():
         updated_at="2026-01-01T00:00:00+00:00",
     )
     report = generate_report(meta, [])
-    assert "未检测到安全问题" in report
+    assert "No security issues detected" in report

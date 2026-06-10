@@ -26,7 +26,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         if len(_hits[client]) >= _MAX_REQUESTS:
             return JSONResponse(
                 status_code=429,
-                content={"detail": "请求过于频繁，请稍后再试"},
+                content={"detail": "Too many requests; please try again later"},
             )
 
         _hits[client].append(now)

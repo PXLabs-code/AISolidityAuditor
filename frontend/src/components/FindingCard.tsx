@@ -5,7 +5,7 @@ export default function FindingCard({ finding }: { finding: Finding }) {
   const location =
     finding.file && finding.line
       ? `${finding.file}:${finding.line}`
-      : finding.file || "未知";
+      : finding.file || "unknown";
 
   return (
     <div className="card" style={{ marginBottom: "1rem" }}>
@@ -18,15 +18,15 @@ export default function FindingCard({ finding }: { finding: Finding }) {
 
       <div style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "0.75rem" }}>
         <span style={{ fontFamily: "var(--mono)" }}>{location}</span>
-        {finding.contract && <> · 合约: {finding.contract}</>}
-        {finding.function && <> · 函数: {finding.function}</>}
+        {finding.contract && <> · Contract: {finding.contract}</>}
+        {finding.function && <> · Function: {finding.function}</>}
       </div>
 
       {finding.ai_expanded && finding.ai.ai_success ? (
         <>
-          <p><strong>问题说明：</strong>{finding.ai.problem}</p>
-          <p style={{ marginTop: "0.5rem" }}><strong>潜在影响：</strong>{finding.ai.impact}</p>
-          <p style={{ marginTop: "0.5rem" }}><strong>修复建议：</strong>{finding.ai.recommendation}</p>
+          <p><strong>Problem:</strong> {finding.ai.problem}</p>
+          <p style={{ marginTop: "0.5rem" }}><strong>Impact:</strong> {finding.ai.impact}</p>
+          <p style={{ marginTop: "0.5rem" }}><strong>Recommendation:</strong> {finding.ai.recommendation}</p>
         </>
       ) : (
         <p>{finding.description}</p>
@@ -34,7 +34,7 @@ export default function FindingCard({ finding }: { finding: Finding }) {
 
       {!finding.ai_expanded && (
         <p style={{ marginTop: "0.5rem", color: "var(--text-muted)", fontSize: "0.85rem" }}>
-          未进行 AI 展开（超出数量限制）
+          AI explanation skipped (exceeds limit)
         </p>
       )}
 

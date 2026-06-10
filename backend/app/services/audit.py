@@ -22,12 +22,12 @@ async def run_audit_pipeline(
         storage.update_status(
             task_id,
             AuditStatus.RUNNING_SLITHER,
-            "正在运行 Slither 静态分析...",
+            "Running Slither static analysis...",
         )
 
         slither_ok, version = slither.check_slither_available()
         if not slither_ok:
-            raise RuntimeError("Slither 未安装或不可用，请检查 Docker 环境")
+            raise RuntimeError("Slither is not installed or unavailable; check your Docker environment")
 
         slither_version = version or "unknown"
         output_path = storage.get_job_dir(task_id) / "slither.json"
@@ -38,7 +38,7 @@ async def run_audit_pipeline(
         storage.update_status(
             task_id,
             AuditStatus.RUNNING_AI,
-            f"Slither 完成，发现 {len(findings)} 个问题，正在进行 AI 解释...",
+            f"Slither finished with {len(findings)} finding(s); running AI explanations...",
         )
 
         explained = await ai.explain_findings(findings, api_key or "")
@@ -61,7 +61,7 @@ async def run_audit_pipeline(
         storage.update_status(
             task_id,
             AuditStatus.COMPLETED,
-            "审计完成",
+            "Audit completed",
             summary=summary,
             finished=True,
             duration_sec=round(duration, 1),
@@ -75,7 +75,7 @@ async def run_audit_pipeline(
         storage.update_status(
             task_id,
             AuditStatus.FAILED,
-            "审计失败",
+            "Audit failed",
             error=str(exc),
             finished=True,
             duration_sec=round(duration, 1),

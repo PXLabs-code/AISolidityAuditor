@@ -1,11 +1,11 @@
 import { Severity } from "../api";
 
 const LABELS: Record<Severity, string> = {
-  High: "高危",
-  Medium: "中危",
-  Low: "低危",
-  Informational: "信息",
-  Optimization: "优化",
+  High: "High",
+  Medium: "Medium",
+  Low: "Low",
+  Informational: "Info",
+  Optimization: "Opt",
 };
 
 export default function SeverityBadge({ severity }: { severity: Severity }) {

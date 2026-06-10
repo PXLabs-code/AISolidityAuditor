@@ -28,7 +28,7 @@ def create_job(filename: str) -> tuple[str, Path]:
         filename=filename,
         created_at=utc_now_iso(),
         updated_at=utc_now_iso(),
-        progress="任务已创建，等待处理",
+        progress="Task created, waiting to start",
     )
     save_meta(task_id, meta)
     return task_id, job_dir

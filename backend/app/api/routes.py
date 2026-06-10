@@ -61,7 +61,7 @@ async def create_audit(
 async def get_audit_status(task_id: str):
     meta = storage.load_meta(task_id)
     if meta is None:
-        raise HTTPException(status_code=404, detail="任务不存在")
+        raise HTTPException(status_code=404, detail="Task not found")
 
     return AuditStatusResponse(
         task_id=meta.task_id,
@@ -79,12 +79,12 @@ async def get_audit_status(task_id: str):
 async def get_findings(task_id: str):
     meta = storage.load_meta(task_id)
     if meta is None:
-        raise HTTPException(status_code=404, detail="任务不存在")
+        raise HTTPException(status_code=404, detail="Task not found")
 
     from app.models.schemas import AuditStatus
 
     if meta.status != AuditStatus.COMPLETED:
-        raise HTTPException(status_code=409, detail="任务尚未完成")
+        raise HTTPException(status_code=409, detail="Task not completed yet")
 
     findings = storage.load_findings(task_id)
     return FindingsResponse(task_id=task_id, findings=findings)
@@ -94,16 +94,16 @@ async def get_findings(task_id: str):
 async def get_slither_raw(task_id: str):
     meta = storage.load_meta(task_id)
     if meta is None:
-        raise HTTPException(status_code=404, detail="任务不存在")
+        raise HTTPException(status_code=404, detail="Task not found")
 
     from app.models.schemas import AuditStatus
 
     if meta.status not in (AuditStatus.COMPLETED, AuditStatus.FAILED):
-        raise HTTPException(status_code=409, detail="Slither 结果尚未就绪")
+        raise HTTPException(status_code=409, detail="Slither results not ready yet")
 
     raw = storage.load_slither_raw(task_id)
     if raw is None:
-        raise HTTPException(status_code=404, detail="Slither 输出不存在")
+        raise HTTPException(status_code=404, detail="Slither output not found")
 
     return JSONResponse(content=raw)
 
@@ -112,16 +112,16 @@ async def get_slither_raw(task_id: str):
 async def get_report(task_id: str, download: bool = False):
     meta = storage.load_meta(task_id)
     if meta is None:
-        raise HTTPException(status_code=404, detail="任务不存在")
+        raise HTTPException(status_code=404, detail="Task not found")
 
     from app.models.schemas import AuditStatus
 
     if meta.status != AuditStatus.COMPLETED:
-        raise HTTPException(status_code=409, detail="任务尚未完成")
+        raise HTTPException(status_code=409, detail="Task not completed yet")
 
     content = storage.load_report(task_id)
     if content is None:
-        raise HTTPException(status_code=404, detail="报告不存在")
+        raise HTTPException(status_code=404, detail="Report not found")
 
     if download:
         filename = f"audit-report-{task_id[:8]}.md"

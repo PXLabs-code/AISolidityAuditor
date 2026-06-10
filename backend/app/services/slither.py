@@ -68,18 +68,18 @@ def run_slither(project_path: Path, output_path: Path) -> dict[str, Any]:
         )
     except subprocess.TimeoutExpired as exc:
         raise RuntimeError(
-            f"Slither 分析超时（超过 {settings.slither_timeout_sec} 秒）"
+            f"Slither analysis timed out (exceeded {settings.slither_timeout_sec}s)"
         ) from exc
 
     if not output_path.exists():
         stderr = result.stderr.strip() or result.stdout.strip()
-        raise RuntimeError(stderr or "Slither 执行失败，未生成输出文件")
+        raise RuntimeError(stderr or "Slither failed without producing output")
 
     raw = json.loads(output_path.read_text(encoding="utf-8"))
 
     if result.returncode != 0 and not raw.get("results", {}).get("detectors"):
         stderr = result.stderr.strip() or result.stdout.strip()
-        raise RuntimeError(stderr or "Slither 执行失败")
+        raise RuntimeError(stderr or "Slither execution failed")
 
     return raw
 

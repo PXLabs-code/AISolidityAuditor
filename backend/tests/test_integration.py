@@ -19,10 +19,10 @@ def _mock_explained_findings() -> list[Finding]:
             file="Reentrancy.sol",
             line=15,
             ai=AIExplanation(
-                title="重入攻击风险",
-                problem="外部调用在状态更新之前执行",
-                impact="攻击者可反复提取资金",
-                recommendation="使用 checks-effects-interactions 模式",
+                title="Reentrancy risk",
+                problem="External call executes before state update",
+                impact="Attacker may drain funds repeatedly",
+                recommendation="Follow checks-effects-interactions pattern",
                 ai_success=True,
             ),
             ai_expanded=True,
@@ -64,12 +64,12 @@ def test_full_audit_pipeline(
     assert findings_resp.status_code == 200
     findings = findings_resp.json()["findings"]
     assert len(findings) == 1
-    assert findings[0]["ai"]["title"] == "重入攻击风险"
+    assert findings[0]["ai"]["title"] == "Reentrancy risk"
 
     report_resp = client.get(f"/api/v1/audits/{task_id}/report")
     assert report_resp.status_code == 200
-    assert "智能合约审计报告" in report_resp.text
-    assert "重入攻击风险" in report_resp.text
+    assert "Smart Contract Audit Report" in report_resp.text
+    assert "Reentrancy risk" in report_resp.text
 
     slither_resp = client.get(f"/api/v1/audits/{task_id}/slither")
     assert slither_resp.status_code == 200
@@ -84,7 +84,7 @@ def test_full_audit_pipeline(
     assert "attachment" in download_resp.headers.get("content-disposition", "")
 
 
-@patch("app.services.audit.slither.run_slither", side_effect=RuntimeError("编译失败"))
+@patch("app.services.audit.slither.run_slither", side_effect=RuntimeError("Compilation failed"))
 @patch("app.services.audit.slither.check_slither_available", return_value=(True, "0.10.4"))
 def test_audit_pipeline_slither_failure(
     _mock_check,
@@ -101,7 +101,7 @@ def test_audit_pipeline_slither_failure(
     task_id = response.json()["task_id"]
     status = client.get(f"/api/v1/audits/{task_id}").json()
     assert status["status"] == AuditStatus.FAILED.value
-    assert "编译失败" in status["error"]
+    assert "Compilation failed" in status["error"]
 
 
 def test_slither_endpoint_not_ready(client: TestClient, example_zip: Path):
@@ -115,7 +115,7 @@ def test_slither_endpoint_not_ready(client: TestClient, example_zip: Path):
     storage.update_status(
         task_id,
         AuditStatus.RUNNING_SLITHER,
-        "分析中",
+        "Analyzing",
     )
 
     resp = client.get(f"/api/v1/audits/{task_id}/slither")

@@ -76,7 +76,7 @@ export async function createAudit(
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: res.statusText }));
-    throw new Error(err.detail || "上传失败");
+    throw new Error(err.detail || "Upload failed");
   }
 
   return res.json();
@@ -86,19 +86,19 @@ export async function getAuditStatus(
   taskId: string
 ): Promise<AuditStatusResponse> {
   const res = await fetch(`${API_BASE}/v1/audits/${taskId}`);
-  if (!res.ok) throw new Error("获取任务状态失败");
+  if (!res.ok) throw new Error("Failed to fetch task status");
   return res.json();
 }
 
 export async function getFindings(taskId: string): Promise<FindingsResponse> {
   const res = await fetch(`${API_BASE}/v1/audits/${taskId}/findings`);
-  if (!res.ok) throw new Error("获取发现项失败");
+  if (!res.ok) throw new Error("Failed to fetch findings");
   return res.json();
 }
 
 export async function getReport(taskId: string): Promise<string> {
   const res = await fetch(`${API_BASE}/v1/audits/${taskId}/report`);
-  if (!res.ok) throw new Error("获取报告失败");
+  if (!res.ok) throw new Error("Failed to fetch report");
   return res.text();
 }
 

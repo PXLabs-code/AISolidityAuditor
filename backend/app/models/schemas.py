@@ -29,11 +29,11 @@ SEVERITY_ORDER = {
 }
 
 SEVERITY_LABELS = {
-    Severity.HIGH: "高危",
-    Severity.MEDIUM: "中危",
-    Severity.LOW: "低危",
-    Severity.INFORMATIONAL: "信息",
-    Severity.OPTIMIZATION: "优化建议",
+    Severity.HIGH: "High",
+    Severity.MEDIUM: "Medium",
+    Severity.LOW: "Low",
+    Severity.INFORMATIONAL: "Informational",
+    Severity.OPTIMIZATION: "Optimization",
 }
 
 

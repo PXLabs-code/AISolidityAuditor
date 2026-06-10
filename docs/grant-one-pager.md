@@ -1,34 +1,34 @@
-# Grant 一页纸
+# Grant one-pager
 
 ## Problem
 
-Slither 是 Ethereum 生态广泛使用的静态分析工具，但其输出面向安全专家，中小开发团队难以理解告警含义并采取修复行动，导致漏洞仍可能进入主网。
+Slither is widely used in the Ethereum ecosystem, but its output targets security experts. Small teams struggle to understand findings and act on them, so vulnerabilities may still reach mainnet.
 
 ## Solution
 
-**AISolidityAuditor** — 开源、可自托管的 Web 平台：
+**AISolidityAuditor** — an open-source, self-hostable web platform:
 
-1. 上传 Solidity 项目 ZIP
-2. 自动运行 Slither 检测
-3. AI 将每条 finding 翻译为中文可读说明（问题、影响、修复建议）
-4. 自动生成 Markdown 审计报告
+1. Upload a Solidity project ZIP
+2. Run Slither automatically
+3. AI translates each finding into readable English (problem, impact, fix)
+4. Generate a Markdown audit report automatically
 
 ## Impact
 
-- 降低智能合约安全自查门槛
-- 与 Slither 官方生态互补，不重复造轮子
-- 开源 MIT，Docker 一键部署，无厂商锁定
+- Lowers the barrier to smart contract security self-checks
+- Complements the official Slither ecosystem without reinventing analysis
+- MIT licensed, Docker one-command deploy, no vendor lock-in
 
-## Open Source
+## Open source
 
-- GitHub 公开仓库
+- Public GitHub repository
 - MIT License
-- 完整文档：架构、威胁模型、已知局限
-- 示例合约与 Demo 录屏
+- Full docs: architecture, threat model, known limitations
+- Sample contracts and demo recording
 
-## Roadmap (Post-MVP)
+## Roadmap (post-MVP)
 
-1. GitHub Action PR 自动审计
-2. Foundry/Hardhat 模板支持
-3. 多模型 / 本地 LLM（Ollama）
-4. Etherscan 合约地址拉取
+1. GitHub Action for PR audits
+2. Foundry/Hardhat template support
+3. Multiple models / local LLM (Ollama)
+4. Etherscan contract address import

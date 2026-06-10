@@ -1,63 +1,63 @@
-# 架构说明
+# Architecture
 
-## 概述
+## Overview
 
-AISolidityAuditor 是单体应用：Python FastAPI 后端 + React 前端，通过子进程调用 Slither，通过 HTTP 调用 OpenAI 兼容 API 进行 AI 解释。
+AISolidityAuditor is a monolithic app: Python FastAPI backend + React frontend. It invokes Slither via subprocess and calls an OpenAI-compatible API for AI explanations.
 
-## 数据流
+## Data flow
 
 ```
-用户上传 ZIP
-  → 解压到 /data/jobs/{taskId}/project/
-  → Slither --json 输出 slither.json
-  → 解析为 findings.json（标准化）
-  → AI 逐条解释（最多 20 条）
-  → 生成 report.md
-  → 前端轮询展示
+User uploads ZIP
+  → Extract to /data/jobs/{taskId}/project/
+  → Slither --json writes slither.json
+  → Parse into findings.json (normalized)
+  → AI explains each finding (up to 20)
+  → Generate report.md
+  → Frontend polls and displays results
 ```
 
-## 组件
+## Components
 
-| 组件 | 职责 |
-|------|------|
-| `upload.py` | ZIP 校验、安全解压 |
-| `slither.py` | 调用 Slither CLI、解析 JSON |
-| `ai.py` | OpenAI 兼容 API 解释 |
-| `report.py` | Markdown 报告生成 |
-| `audit.py` | 审计流水线编排 |
-| `storage.py` | 文件系统任务存储 |
-| `cleanup.py` | 过期任务目录清理 |
+| Component | Responsibility |
+|-----------|----------------|
+| `upload.py` | ZIP validation and safe extraction |
+| `slither.py` | Slither CLI invocation and JSON parsing |
+| `ai.py` | OpenAI-compatible API explanations |
+| `report.py` | Markdown report generation |
+| `audit.py` | Audit pipeline orchestration |
+| `storage.py` | Filesystem task storage |
+| `cleanup.py` | Expired job directory cleanup |
 
 ## API
 
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| POST | `/api/v1/audits` | 上传 ZIP |
-| GET | `/api/v1/audits/{taskId}` | 任务状态 |
-| GET | `/api/v1/audits/{taskId}/findings` | 发现项列表 |
-| GET | `/api/v1/audits/{taskId}/report` | Markdown 报告 |
-| GET | `/api/v1/audits/{taskId}/slither` | Slither 原始 JSON |
-| GET | `/api/health` | 健康检查 |
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/v1/audits` | Upload ZIP |
+| GET | `/api/v1/audits/{taskId}` | Task status |
+| GET | `/api/v1/audits/{taskId}/findings` | Findings list |
+| GET | `/api/v1/audits/{taskId}/report` | Markdown report |
+| GET | `/api/v1/audits/{taskId}/slither` | Raw Slither JSON |
+| GET | `/api/health` | Health check |
 
-## 部署
+## Deployment
 
-- 开发：后端 `uvicorn` + 前端 `vite dev`（代理 /api）
-- 生产：`docker compose up` 单容器，前端静态文件由 FastAPI 托管
+- Development: backend `uvicorn` + frontend `vite dev` (proxies `/api`)
+- Production: `docker compose up` single container; FastAPI serves built frontend static files
 
-## 安全
+## Security
 
-- ZIP 路径穿越防护
-- 禁止符号链接
-- 文件大小限制（10 MB）
-- API Key 不落盘、不写日志
-- 上传接口按 IP 限流（内存计数器）
+- ZIP path traversal protection
+- Symbolic links rejected
+- File size limit (10 MB)
+- API keys not persisted or logged
+- Upload rate limiting per IP (in-memory counter)
 
-## 任务清理
+## Job cleanup
 
-`cleanup.py` 在应用启动时与每小时定时任务中执行，删除超过 `JOB_RETENTION_HOURS`（默认 24h）的任务目录。
+`cleanup.py` runs on application startup and hourly to delete task directories older than `JOB_RETENTION_HOURS` (default 24h).
 
-## 已知局限
+## Known limitations
 
-- 非正式审计，AI 可能误释
-- 仅静态分析，不覆盖业务逻辑漏洞
-- 复杂 Foundry/Hardhat 项目可能需要手动调整 ZIP
+- Not a formal audit; AI explanations may be inaccurate
+- Static analysis only; does not cover business-logic bugs
+- Complex Foundry/Hardhat projects may require manual ZIP adjustments
