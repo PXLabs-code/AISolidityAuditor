@@ -1,0 +1,47 @@
+name: Action end-to-end demo
+
+# Proves the full Action chain on a pinned real project:
+# composite action -> SARIF upload to code scanning -> artifacts -> PR comment.
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/action-e2e-demo.yml"
+      - "action.yml"
+      - "docs/real-project-demo.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+  pull-requests: write
+
+jobs:
+  action-e2e-solmate:
+    runs-on: ubuntu-latest
+    env:
+      SOLMATE_COMMIT: 89365b880c4f3c786bdd453d4b8e8fe410344a69
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Check out solmate at pinned commit
+        run: |
+          git clone https://github.com/transmissions11/solmate.git .cache/solmate
+          cd .cache/solmate
+          git checkout "${SOLMATE_COMMIT}"
+
+      - name: Build solmate
+        working-directory: .cache/solmate
+        run: forge build
+
+      - name: Run AISolidityAuditor action (full chain)
+        uses: ./
+        with:
+          project_path: .cache/solmate
+          mode: glamsterdam-readiness
+          upload_sarif: "true"
+          comment_on_pr: "true"
+          include_informational: "false"
+          sarif_category: action-e2e-solmate

@@ -20,6 +20,27 @@ Run the pinned GitHub Actions demo workflow:
 gh workflow run real-project-demo.yml -f demo=transmissions11-solmate
 ```
 
+## End-to-end Action chain demo
+
+The artifact-generation workflow above does not exercise SARIF upload or PR comments. The dedicated workflow [.github/workflows/action-e2e-demo.yml](../.github/workflows/action-e2e-demo.yml) proves the **full Action chain** by invoking the composite action (`uses: ./`) against pinned solmate:
+
+1. Composite action runs Slither + Glamsterdam readiness heuristics.
+2. SARIF is uploaded to GitHub code scanning (`github/codeql-action/upload-sarif`, category `action-e2e-solmate`).
+3. Slither and readiness artifacts are uploaded as Actions artifacts.
+4. The Markdown triage report is posted as a PR comment (on `pull_request` events).
+
+It triggers on pull requests touching the workflow, `action.yml`, or this document, and can also be run manually:
+
+```bash
+gh workflow run action-e2e-demo.yml
+```
+
+### Recorded end-to-end runs
+
+| Date | Trigger | Action run | Code scanning | PR comment |
+|------|---------|------------|---------------|------------|
+| _pending_ | _pending_ | _pending_ | _pending_ | _pending_ |
+
 ## Candidate repositories
 
 Use small, well-known, open-source Solidity repositories where CI runtime is reasonable:
@@ -32,7 +53,7 @@ Use small, well-known, open-source Solidity repositories where CI runtime is rea
 
 ## GitHub Action demo
 
-Add this workflow to a fork of the target repository:
+Add this workflow to a fork of the target repository. The action is consumed directly from this repository today; a dedicated `AISolidityAuditor-action` repository with a `v1` tag is a planned release within the grant scope.
 
 ```yaml
 name: Glamsterdam Solidity Readiness Triage
@@ -51,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: PXLabs-code/AISolidityAuditor-action@v1
+      - uses: PXLabs-code/AISolidityAuditor@master
         with:
           mode: glamsterdam-readiness
           upload_sarif: "true"

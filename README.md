@@ -139,6 +139,8 @@ AISolidityAuditor can run as a security triage step in Solidity repositories. It
 - Optional pull request comment
 - Optional SARIF upload to GitHub code scanning
 
+> **Release status**: the composite action currently lives at the root of this repository (`action.yml`) and is referenced as `PXLabs-code/AISolidityAuditor@master`. A dedicated `AISolidityAuditor-action` repository with a stable `v1` tag is a **planned release** and part of the proposed grant scope. Pin a commit SHA for reproducible CI until the tagged release exists.
+
 ```yaml
 name: Solidity Security Triage
 
@@ -156,7 +158,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: PXLabs-code/AISolidityAuditor-action@v1
+      - uses: PXLabs-code/AISolidityAuditor@master
         with:
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
           ai_provider: openai
@@ -166,7 +168,7 @@ jobs:
 For Claude:
 
 ```yaml
-- uses: PXLabs-code/AISolidityAuditor-action@v1
+- uses: PXLabs-code/AISolidityAuditor@master
   with:
     ai_provider: claude
     anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -175,7 +177,7 @@ For Claude:
 For DeepSeek:
 
 ```yaml
-- uses: PXLabs-code/AISolidityAuditor-action@v1
+- uses: PXLabs-code/AISolidityAuditor@master
   with:
     ai_provider: deepseek
     deepseek_api_key: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -184,7 +186,7 @@ For DeepSeek:
 For a no-AI CI gate that fails on High findings and keeps SARIF focused on primary risks:
 
 ```yaml
-- uses: PXLabs-code/AISolidityAuditor-action@v1
+- uses: PXLabs-code/AISolidityAuditor@master
   with:
     upload_sarif: "true"
     comment_on_pr: "true"
@@ -195,13 +197,15 @@ For a no-AI CI gate that fails on High findings and keeps SARIF focused on prima
 For a Glamsterdam readiness run aligned with the current ESP Wishlist:
 
 ```yaml
-- uses: PXLabs-code/AISolidityAuditor-action@v1
+- uses: PXLabs-code/AISolidityAuditor@master
   with:
     mode: glamsterdam-readiness
     upload_sarif: "true"
     comment_on_pr: "true"
     include_informational: "false"
 ```
+
+Inside this repository the same action can be exercised with `uses: ./`, which is how the end-to-end demo workflow ([.github/workflows/action-e2e-demo.yml](.github/workflows/action-e2e-demo.yml)) validates the full Action, SARIF upload, artifact, and PR comment chain.
 
 This mode emits the normal Slither triage artifacts plus:
 
