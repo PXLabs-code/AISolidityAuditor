@@ -11,7 +11,7 @@ Slither is widely used in the Ethereum ecosystem, but its output targets securit
 1. Upload a Solidity project ZIP
 2. Run Slither automatically
 3. AI translates each finding into readable English (problem, impact, fix)
-4. Generate a Markdown audit report automatically
+4. Generate a Markdown security triage report automatically
 
 ## Impact
 

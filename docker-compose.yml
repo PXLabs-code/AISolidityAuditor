@@ -13,6 +13,9 @@ services:
     environment:
       - DATA_DIR=/data/jobs
       - MAX_UPLOAD_MB=10
+      - MAX_ZIP_FILES=200
+      - MAX_ZIP_FILE_MB=2
+      - MAX_EXTRACTED_MB=30
       - SLITHER_TIMEOUT_SEC=120
       - MAX_AI_FINDINGS=20
       - AI_PROVIDER=${AI_PROVIDER:-openai}

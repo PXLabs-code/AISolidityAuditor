@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 from typing import Optional
 
@@ -12,7 +13,7 @@ from app.models.schemas import (
     FindingsResponse,
     HealthResponse,
 )
-from app.services import audit, slither, storage, upload
+from app.services import audit, report, slither, storage, upload
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -146,3 +147,28 @@ async def get_report(task_id: str, download: bool = False):
         )
 
     return PlainTextResponse(content, media_type="text/markdown; charset=utf-8")
+
+
+@router.get("/v1/audits/{task_id}/sarif")
+async def get_sarif(task_id: str, download: bool = False):
+    meta = storage.load_meta(task_id)
+    if meta is None:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    from app.models.schemas import AuditStatus
+
+    if meta.status != AuditStatus.COMPLETED:
+        raise HTTPException(status_code=409, detail="Task not completed yet")
+
+    findings = storage.load_findings(task_id)
+    content = report.generate_sarif(findings)
+
+    if download:
+        filename = f"audit-results-{task_id[:8]}.sarif"
+        return Response(
+            content=json.dumps(content, indent=2),
+            media_type="application/sarif+json",
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+        )
+
+    return JSONResponse(content=content, media_type="application/sarif+json")

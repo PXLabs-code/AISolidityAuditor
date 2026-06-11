@@ -118,17 +118,24 @@ def _extract_location(elements: list[dict[str, Any]]) -> tuple[Optional[str], Op
 def parse_slither_results(raw: dict[str, Any]) -> list[Finding]:
     detectors = raw.get("results", {}).get("detectors", [])
     findings: list[Finding] = []
+    seen: set[tuple[str, Optional[str], Optional[int], Optional[str]]] = set()
 
     for idx, det in enumerate(detectors):
         impact = det.get("impact", "Informational")
         severity = IMPACT_TO_SEVERITY.get(impact, Severity.INFORMATIONAL)
         elements = det.get("elements", [])
         contract, function, file_path, line = _extract_location(elements)
+        detector = det.get("check", "unknown")
+
+        dedupe_key = (detector, file_path, line, function)
+        if dedupe_key in seen:
+            continue
+        seen.add(dedupe_key)
 
         findings.append(
             Finding(
-                id=f"finding-{idx + 1}",
-                detector=det.get("check", "unknown"),
+                id=f"finding-{len(findings) + 1}",
+                detector=detector,
                 severity=severity,
                 description=det.get("description", ""),
                 contract=contract,

@@ -1,6 +1,7 @@
 import json
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import httpx
 import pytest
 
 from app.models.schemas import AIExplanation, Finding, Severity
@@ -17,6 +18,7 @@ def _sample_finding() -> Finding:
         function="withdraw",
         file="Reentrancy.sol",
         line=15,
+        source_context="15: function withdraw() external { msg.sender.call(\"\"); }",
     )
 
 
@@ -51,6 +53,7 @@ async def test_explain_finding_mock_response():
     assert result.ai_success is True
     assert result.title == "Reentrancy risk"
     assert "checks-effects-interactions" in result.recommendation
+    assert result.confidence == "medium"
 
 
 @pytest.mark.asyncio
@@ -109,3 +112,80 @@ async def test_explain_findings_records_provider_failure():
     assert result[0].ai.ai_success is False
     assert result[0].ai.provider == "claude"
     assert result[0].ai.error == "No API key configured for claude"
+
+
+@pytest.mark.asyncio
+async def test_explain_finding_rejects_missing_required_ai_fields():
+    mock_response = {"choices": [{"message": {"content": json.dumps({"title": ""})}}]}
+
+    with patch("app.services.ai.httpx.AsyncClient") as mock_client_cls:
+        mock_client = AsyncMock()
+        mock_client_cls.return_value.__aenter__.return_value = mock_client
+        mock_resp = MagicMock()
+        mock_resp.json.return_value = mock_response
+        mock_client.post = AsyncMock(return_value=mock_resp)
+
+        result = await explain_finding(_sample_finding(), api_key="test-key")
+
+    assert result.ai_success is False
+    assert "missing required field" in result.error.lower()
+    assert result.manual_review_required is True
+    assert result.confidence == "low"
+
+
+@pytest.mark.asyncio
+async def test_explain_finding_rejects_detached_ai_response():
+    mock_response = {
+        "choices": [
+            {
+                "message": {
+                    "content": json.dumps(
+                        {
+                            "title": "Governance voting delay",
+                            "problem": "Votes are counted after a timelock proposal delay.",
+                            "impact": "Token holders may wait longer for execution.",
+                            "recommendation": "Tune quorum and proposal timing.",
+                        }
+                    )
+                }
+            }
+        ]
+    }
+
+    with patch("app.services.ai.httpx.AsyncClient") as mock_client_cls:
+        mock_client = AsyncMock()
+        mock_client_cls.return_value.__aenter__.return_value = mock_client
+        mock_resp = MagicMock()
+        mock_resp.json.return_value = mock_response
+        mock_client.post = AsyncMock(return_value=mock_resp)
+
+        result = await explain_finding(_sample_finding(), api_key="test-key")
+
+    assert result.ai_success is False
+    assert "detached" in result.error
+
+
+@pytest.mark.asyncio
+async def test_explain_finding_sanitizes_rate_limit_error():
+    request = httpx.Request("POST", "https://api.openai.com/v1/chat/completions")
+    response = httpx.Response(429, request=request)
+
+    with patch("app.services.ai.httpx.AsyncClient") as mock_client_cls:
+        mock_client = AsyncMock()
+        mock_client_cls.return_value.__aenter__.return_value = mock_client
+        mock_resp = MagicMock()
+        mock_resp.raise_for_status.side_effect = httpx.HTTPStatusError(
+            "Too Many Requests",
+            request=request,
+            response=response,
+        )
+        mock_client.post = AsyncMock(return_value=mock_resp)
+
+        result = await explain_finding(_sample_finding(), api_key="test-key")
+
+    assert result.ai_success is False
+    assert result.error == (
+        "openai rate limit or quota exceeded (HTTP 429). "
+        "Retry later, reduce AI explanations, or use another API key/provider."
+    )
+    assert "developer.mozilla.org" not in result.error

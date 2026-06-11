@@ -10,13 +10,14 @@ from app.models.schemas import AIExplanation, Finding
 
 logger = logging.getLogger(__name__)
 
-SYSTEM_PROMPT = """You are a smart contract security audit assistant. Your task is to translate technical alerts from the Slither static analysis tool into clear explanations for developers.
+SYSTEM_PROMPT = """You are a smart contract security triage assistant. Your task is to translate technical alerts from the Slither static analysis tool into clear explanations for developers.
 
 Strict requirements:
 1. Only explain based on the provided Slither finding; do not invent issues that were not reported
 2. When uncertain, explicitly state "manual review required"
 3. Write in English; technical terms (e.g. reentrancy) may remain as-is
-4. Respond with valid JSON only; do not wrap in markdown code blocks"""
+4. Use the source context as evidence when it is present
+5. Respond with valid JSON only; do not wrap in markdown code blocks"""
 
 USER_PROMPT_TEMPLATE = """Explain the following Slither security finding:
 
@@ -26,12 +27,32 @@ Description: {description}
 Contract: {contract}
 Function: {function}
 Location: {location}
+Source context:
+{source_context}
 
 Reply in JSON with these fields:
 - title: short English title (max 50 characters)
 - problem: what is wrong (developer-facing)
 - impact: potential impact
-- recommendation: concrete fix guidance"""
+- recommendation: concrete fix guidance
+- confidence: one of "low", "medium", "high"
+- manual_review_required: boolean"""
+
+STOPWORDS = {
+    "the",
+    "and",
+    "for",
+    "this",
+    "that",
+    "with",
+    "from",
+    "contract",
+    "function",
+    "issue",
+    "finding",
+    "slither",
+    "security",
+}
 
 
 class AIProviderError(RuntimeError):
@@ -52,18 +73,67 @@ def _finding_prompt(finding: Finding) -> str:
         contract=finding.contract or "unknown",
         function=finding.function or "unknown",
         location=location or "unknown",
+        source_context=finding.source_context or "Not available. Explain only from the Slither finding and mark manual_review_required=true.",
     )
+
+
+def _keywords(text: str) -> set[str]:
+    tokens = set()
+    current = []
+    for char in text.lower():
+        if char.isalnum() or char in {"_", "-"}:
+            current.append(char)
+        elif current:
+            token = "".join(current)
+            if len(token) >= 4 and token not in STOPWORDS:
+                tokens.add(token)
+            current = []
+    if current:
+        token = "".join(current)
+        if len(token) >= 4 and token not in STOPWORDS:
+            tokens.add(token)
+    return tokens
+
+
+def _validate_ai_payload(parsed: dict[str, Any], finding: Finding) -> None:
+    required_fields = ("title", "problem", "impact", "recommendation")
+    missing = [field for field in required_fields if not str(parsed.get(field, "")).strip()]
+    if missing:
+        raise AIProviderError(f"AI response missing required field(s): {', '.join(missing)}")
+
+    evidence = " ".join(
+        value
+        for value in [
+            finding.detector,
+            finding.description,
+            finding.contract or "",
+            finding.function or "",
+            finding.source_context or "",
+        ]
+        if value
+    )
+    answer = " ".join(str(parsed.get(field, "")) for field in required_fields)
+    evidence_keywords = _keywords(evidence)
+    answer_keywords = _keywords(answer)
+    if evidence_keywords and answer_keywords and not evidence_keywords.intersection(answer_keywords):
+        raise AIProviderError("AI response appears detached from the Slither finding and source context")
 
 
 def _explanation_from_json(content: str, finding: Finding, provider: str) -> AIExplanation:
     parsed = json.loads(content)
+    _validate_ai_payload(parsed, finding)
+    confidence = parsed.get("confidence", "medium" if finding.source_context else "low")
+    if confidence not in {"low", "medium", "high"}:
+        confidence = "low"
     return AIExplanation(
-        title=parsed.get("title", finding.detector),
-        problem=parsed.get("problem", finding.description),
-        impact=parsed.get("impact", ""),
-        recommendation=parsed.get("recommendation", ""),
+        title=str(parsed.get("title", finding.detector)).strip(),
+        problem=str(parsed.get("problem", finding.description)).strip(),
+        impact=str(parsed.get("impact", "")).strip(),
+        recommendation=str(parsed.get("recommendation", "")).strip(),
         ai_success=True,
         provider=provider,
+        manual_review_required=bool(parsed.get("manual_review_required", not finding.source_context)),
+        confidence=confidence,
     )
 
 
@@ -82,7 +152,33 @@ def _fallback_explanation(
         ai_success=False,
         provider=provider,
         error=error,
+        manual_review_required=True,
+        confidence="low",
     )
+
+
+def _provider_error_message(provider: str, exc: Exception) -> str:
+    if isinstance(exc, httpx.HTTPStatusError):
+        status = exc.response.status_code
+        if status == 429:
+            return (
+                f"{provider} rate limit or quota exceeded (HTTP 429). "
+                "Retry later, reduce AI explanations, or use another API key/provider."
+            )
+        if status == 401:
+            return f"{provider} authentication failed (HTTP 401). Check the configured API key."
+        if status == 403:
+            return f"{provider} request was forbidden (HTTP 403). Check API key permissions and model access."
+        if 500 <= status <= 599:
+            return f"{provider} service error (HTTP {status}). Retry later."
+        return f"{provider} request failed (HTTP {status})."
+
+    if isinstance(exc, httpx.TimeoutException):
+        return f"{provider} request timed out. Retry later or reduce AI explanations."
+    if isinstance(exc, httpx.RequestError):
+        return f"{provider} request failed before receiving a response. Check network access."
+
+    return str(exc).replace("\r", " ").replace("\n", " ").strip()
 
 
 class BaseAIProvider(ABC):
@@ -214,7 +310,7 @@ class AIService:
         try:
             return await provider.explain(finding, api_key)
         except Exception as exc:
-            message = str(exc)
+            message = _provider_error_message(provider.name, exc)
             logger.warning(
                 "AI explanation failed for %s using %s: %s",
                 finding.id,

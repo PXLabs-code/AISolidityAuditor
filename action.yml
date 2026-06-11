@@ -1,0 +1,98 @@
+name: AISolidityAuditor Security Triage
+description: Run Slither, optional AI explanations, Markdown report, findings JSON, and SARIF output.
+
+inputs:
+  openai_api_key:
+    description: OpenAI-compatible API key for AI explanations.
+    required: false
+    default: ""
+  anthropic_api_key:
+    description: Anthropic API key for Claude explanations.
+    required: false
+    default: ""
+  ai_provider:
+    description: AI provider to use: openai or claude.
+    required: false
+    default: openai
+  project_path:
+    description: Solidity project path relative to the caller workspace.
+    required: false
+    default: "."
+  output_dir:
+    description: Directory for audit-report.md, slither.json, findings.json, and audit-results.sarif.
+    required: false
+    default: aisolidityauditor-results
+  upload_sarif:
+    description: Upload SARIF to GitHub code scanning.
+    required: false
+    default: "true"
+  comment_on_pr:
+    description: Post a truncated Markdown report as a pull request comment.
+    required: false
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+        cache: pip
+        cache-dependency-path: ${{ github.action_path }}/backend/requirements*.txt
+
+    - name: Install Python dependencies
+      shell: bash
+      run: python -m pip install -r "$GITHUB_ACTION_PATH/backend/requirements.txt"
+
+    - name: Install solc
+      shell: bash
+      run: |
+        sudo curl -fsSL https://github.com/ethereum/solidity/releases/download/v0.8.20/solc-static-linux -o /usr/local/bin/solc
+        sudo chmod +x /usr/local/bin/solc
+
+    - name: Run Solidity security triage
+      shell: bash
+      run: |
+        python "$GITHUB_ACTION_PATH/scripts/github_action_audit.py" \
+          --project "$GITHUB_WORKSPACE/${{ inputs.project_path }}" \
+          --output-dir "$GITHUB_WORKSPACE/${{ inputs.output_dir }}" \
+          --ai-provider "${{ inputs.ai_provider }}" \
+          --openai-api-key "${{ inputs.openai_api_key }}" \
+          --anthropic-api-key "${{ inputs.anthropic_api_key }}"
+
+    - name: Upload audit artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: aisolidityauditor-results
+        path: |
+          ${{ inputs.output_dir }}/audit-report.md
+          ${{ inputs.output_dir }}/slither.json
+          ${{ inputs.output_dir }}/findings.json
+          ${{ inputs.output_dir }}/audit-results.sarif
+
+    - name: Upload SARIF
+      if: ${{ inputs.upload_sarif == 'true' }}
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: ${{ inputs.output_dir }}/audit-results.sarif
+
+    - name: Comment on pull request
+      if: ${{ inputs.comment_on_pr == 'true' && github.event_name == 'pull_request' }}
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const path = `${{ inputs.output_dir }}/audit-report.md`;
+          const report = fs.readFileSync(path, 'utf8');
+          const body = [
+            '## AISolidityAuditor security triage',
+            '',
+            report.length > 60000 ? `${report.slice(0, 60000)}\n\n_Report truncated. See uploaded artifact for the full report._` : report
+          ].join('\n');
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body
+          });

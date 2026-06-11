@@ -41,6 +41,8 @@ export interface AIExplanation {
   ai_success: boolean;
   provider?: string;
   error?: string;
+  manual_review_required: boolean;
+  confidence: "low" | "medium" | "high";
 }
 
 export interface Finding {
@@ -52,6 +54,9 @@ export interface Finding {
   function?: string;
   file?: string;
   line?: number;
+  source_context?: string;
+  source_start_line?: number;
+  source_end_line?: number;
   ai: AIExplanation;
   ai_expanded: boolean;
 }

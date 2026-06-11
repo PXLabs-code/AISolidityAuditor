@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { ReactNode } from "react";
+import { Link } from "react-router-dom";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -30,7 +30,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 fontSize: "0.85rem",
               }}
             >
-              Ethereum EVM · Slither + AI
+              Solidity triage · Slither + AI
             </span>
           </Link>
         </div>

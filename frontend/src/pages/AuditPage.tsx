@@ -215,7 +215,7 @@ export default function AuditPage() {
               className={activeTab === "report" ? "btn-primary" : "btn-secondary"}
               onClick={() => setActiveTab("report")}
             >
-              Audit Report
+              Triage Report
             </button>
             <a
               href={getReportDownloadUrl(taskId)}

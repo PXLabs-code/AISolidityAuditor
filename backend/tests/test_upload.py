@@ -65,3 +65,56 @@ def test_upload_rejects_path_traversal(client: TestClient):
         files={"file": ("evil.zip", zip_bytes, "application/zip")},
     )
     assert response.status_code == 400
+
+
+def test_upload_rejects_unsupported_file_type(client: TestClient):
+    zip_bytes = _make_zip(
+        {
+            "contracts/Test.sol": "pragma solidity ^0.8.0; contract X {}",
+            "scripts/install.sh": "echo bad",
+        }
+    )
+    response = client.post(
+        "/api/v1/audits",
+        files={"file": ("unsupported.zip", zip_bytes, "application/zip")},
+    )
+    assert response.status_code == 400
+    assert "unsupported file type" in response.json()["detail"].lower()
+
+
+def test_upload_rejects_too_many_files(client: TestClient, monkeypatch):
+    monkeypatch.setattr("app.services.upload.settings.max_zip_files", 1)
+    zip_bytes = _make_zip(
+        {
+            "contracts/A.sol": "pragma solidity ^0.8.0; contract A {}",
+            "contracts/B.sol": "pragma solidity ^0.8.0; contract B {}",
+        }
+    )
+    response = client.post(
+        "/api/v1/audits",
+        files={"file": ("too-many.zip", zip_bytes, "application/zip")},
+    )
+    assert response.status_code == 400
+    assert "too many files" in response.json()["detail"].lower()
+
+
+def test_upload_rejects_large_single_file(client: TestClient, monkeypatch):
+    monkeypatch.setattr("app.services.upload.settings.max_zip_file_mb", 0)
+    zip_bytes = _make_zip({"contracts/Test.sol": "pragma solidity ^0.8.0; contract X {}"})
+    response = client.post(
+        "/api/v1/audits",
+        files={"file": ("large-file.zip", zip_bytes, "application/zip")},
+    )
+    assert response.status_code == 400
+    assert "member exceeds size limit" in response.json()["detail"].lower()
+
+
+def test_upload_rejects_large_extracted_size(client: TestClient, monkeypatch):
+    monkeypatch.setattr("app.services.upload.settings.max_extracted_mb", 0)
+    zip_bytes = _make_zip({"contracts/Test.sol": "pragma solidity ^0.8.0; contract X {}"})
+    response = client.post(
+        "/api/v1/audits",
+        files={"file": ("large-total.zip", zip_bytes, "application/zip")},
+    )
+    assert response.status_code == 400
+    assert "extracted size" in response.json()["detail"].lower()

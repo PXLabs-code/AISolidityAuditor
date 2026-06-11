@@ -68,8 +68,13 @@ def test_full_audit_pipeline(
 
     report_resp = client.get(f"/api/v1/audits/{task_id}/report")
     assert report_resp.status_code == 200
-    assert "Smart Contract Audit Report" in report_resp.text
+    assert "Solidity Security Triage Report" in report_resp.text
     assert "Reentrancy risk" in report_resp.text
+
+    sarif_resp = client.get(f"/api/v1/audits/{task_id}/sarif")
+    assert sarif_resp.status_code == 200
+    assert sarif_resp.json()["version"] == "2.1.0"
+    assert sarif_resp.json()["runs"][0]["results"][0]["ruleId"] == "reentrancy-eth"
 
     slither_resp = client.get(f"/api/v1/audits/{task_id}/slither")
     assert slither_resp.status_code == 200
@@ -120,3 +125,15 @@ def test_slither_endpoint_not_ready(client: TestClient, example_zip: Path):
 
     resp = client.get(f"/api/v1/audits/{task_id}/slither")
     assert resp.status_code == 409
+
+
+@patch("app.api.routes.slither.check_solc_available", return_value=True)
+@patch("app.api.routes.slither.check_slither_available", return_value=(True, "0.10.4"))
+def test_health_reports_ai_provider_configuration(_mock_slither, _mock_solc, client: TestClient):
+    resp = client.get("/api/health")
+
+    assert resp.status_code == 200
+    details = resp.json()["details"]
+    assert details["ai_provider"] == "openai"
+    assert "openai_configured" in details
+    assert "claude_configured" in details

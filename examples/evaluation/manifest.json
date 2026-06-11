@@ -1,0 +1,62 @@
+[
+  {
+    "name": "reentrancy",
+    "file": "reentrancy.sol",
+    "expected_detectors": ["reentrancy-eth"],
+    "expected_explanation_keywords": ["reentrancy", "external call", "state update", "checks-effects-interactions"]
+  },
+  {
+    "name": "tx.origin",
+    "file": "tx_origin.sol",
+    "expected_detectors": ["tx-origin"],
+    "expected_explanation_keywords": ["tx.origin", "phishing", "authorization", "msg.sender"]
+  },
+  {
+    "name": "unchecked call",
+    "file": "unchecked_call.sol",
+    "expected_detectors": ["unchecked-lowlevel"],
+    "expected_explanation_keywords": ["unchecked", "low-level call", "return value", "failure"]
+  },
+  {
+    "name": "timestamp dependence",
+    "file": "timestamp_dependence.sol",
+    "expected_detectors": ["timestamp"],
+    "expected_explanation_keywords": ["timestamp", "miner", "manipulation", "block.timestamp"]
+  },
+  {
+    "name": "access control",
+    "file": "access_control.sol",
+    "expected_detectors": ["protected-vars", "events-access"],
+    "expected_explanation_keywords": ["access control", "owner", "authorization", "onlyOwner"]
+  },
+  {
+    "name": "integer issue",
+    "file": "integer_issue.sol",
+    "expected_detectors": ["solc-version"],
+    "expected_explanation_keywords": ["Solidity 0.7", "overflow", "checked arithmetic", "upgrade"]
+  },
+  {
+    "name": "delegatecall",
+    "file": "delegatecall.sol",
+    "expected_detectors": ["controlled-delegatecall"],
+    "expected_explanation_keywords": ["delegatecall", "storage", "untrusted target", "code execution"]
+  },
+  {
+    "name": "selfdestruct",
+    "file": "selfdestruct.sol",
+    "expected_detectors": ["suicidal"],
+    "expected_explanation_keywords": ["selfdestruct", "destroy", "funds", "lifecycle"]
+  },
+  {
+    "name": "false positive case",
+    "file": "false_positive_case.sol",
+    "expected_detectors": [],
+    "expected_explanation_keywords": ["state update", "external call", "manual review", "false positive"]
+  },
+  {
+    "name": "clean contract",
+    "file": "clean_contract.sol",
+    "expected_detectors": [],
+    "expected_explanation_keywords": ["no finding", "clean", "manual review"]
+  }
+]

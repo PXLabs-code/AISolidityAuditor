@@ -8,6 +8,9 @@ class Settings(BaseSettings):
 
     data_dir: Path = Path("./data/jobs")
     max_upload_mb: int = 10
+    max_zip_files: int = 200
+    max_zip_file_mb: int = 2
+    max_extracted_mb: int = 30
     slither_timeout_sec: int = 120
     max_ai_findings: int = 20
     job_retention_hours: int = 24

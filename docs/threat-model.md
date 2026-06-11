@@ -6,8 +6,8 @@
 |--------|------|------------|
 | ZIP path traversal (`../`) | Write outside job dir | Path validation; reject `..` and absolute paths |
 | ZIP symbolic links | Read/write arbitrary files | Detect Unix symlink attributes and reject |
-| ZIP bomb | Disk/memory exhaustion | 10 MB upload limit; post-extract size monitoring (post-MVP) |
-| Malicious binaries | Code execution | Only `.sol` analysis; no execution of extracted binaries |
+| ZIP bomb | Disk/memory exhaustion | Upload size, extracted file count, single-file, and total extracted-size limits |
+| Malicious binaries | Code execution | Allow only Solidity sources and common project config files |
 | API key leakage | Cost/abuse | Keys not persisted or logged; HTTPS recommended in production |
 | Denial of service | Resource exhaustion | Slither 120s timeout; Semaphore(3); rate limiting |
 

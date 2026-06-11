@@ -10,13 +10,13 @@
 ## Flow
 
 1. **Introduction** (30s)
-   - Show the home page: "AI Smart Contract Audit"
+   - Show the home page: "Solidity Security Triage Assistant"
    - Explain: upload ZIP → Slither → AI explanation → report
 
 2. **Upload** (30s)
    - Drag `reentrancy-example.zip`
    - Enter API key if needed
-   - Click "Start Audit"
+   - Click "Start Triage"
 
 3. **Wait** (60–120s)
    - Show task page status: Running Slither → AI explaining
@@ -25,7 +25,7 @@
 4. **Results** (90s)
    - Show summary stats (High/Medium/etc.)
    - Switch to "Findings" tab; show AI explanation for reentrancy
-   - Switch to "Audit Report" tab; show Markdown report
+   - Switch to "Triage Report" tab; show Markdown report
    - Click "Download report"
 
 5. **Closing** (30s)

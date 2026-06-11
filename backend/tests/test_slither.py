@@ -37,3 +37,34 @@ def test_parse_sorts_by_severity():
         Severity.MEDIUM,
         Severity.LOW,
     ]
+
+
+def test_parse_deduplicates_findings_by_detector_location_and_function():
+    element = {
+        "type": "function",
+        "name": "withdraw",
+        "source_mapping": {"filename_short": "Vault.sol", "lines": [42]},
+    }
+    raw = {
+        "results": {
+            "detectors": [
+                {
+                    "check": "reentrancy-eth",
+                    "impact": "High",
+                    "description": "duplicate one",
+                    "elements": [element],
+                },
+                {
+                    "check": "reentrancy-eth",
+                    "impact": "High",
+                    "description": "duplicate two",
+                    "elements": [element],
+                },
+            ]
+        }
+    }
+
+    findings = parse_slither_results(raw)
+
+    assert len(findings) == 1
+    assert findings[0].id == "finding-1"

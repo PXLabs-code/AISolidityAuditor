@@ -29,6 +29,10 @@ export default function FindingCard({ finding }: { finding: Finding }) {
               AI provider: <code>{finding.ai.provider}</code>
             </p>
           )}
+          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+            AI confidence: <code>{finding.ai.confidence}</code> · Manual review required:{" "}
+            {finding.ai.manual_review_required ? "Yes" : "No"}
+          </p>
           <p><strong>Problem:</strong> {finding.ai.problem}</p>
           <p style={{ marginTop: "0.5rem" }}><strong>Impact:</strong> {finding.ai.impact}</p>
           <p style={{ marginTop: "0.5rem" }}><strong>Recommendation:</strong> {finding.ai.recommendation}</p>
@@ -48,6 +52,17 @@ export default function FindingCard({ finding }: { finding: Finding }) {
         <p style={{ marginTop: "0.5rem", color: "var(--text-muted)", fontSize: "0.85rem" }}>
           AI explanation skipped (exceeds limit)
         </p>
+      )}
+
+      {finding.source_context && (
+        <details style={{ marginTop: "0.75rem" }}>
+          <summary style={{ cursor: "pointer", color: "var(--text-muted)", fontSize: "0.85rem" }}>
+            Source context
+          </summary>
+          <pre style={{ overflowX: "auto", marginTop: "0.5rem", background: "var(--surface-2)", padding: "0.75rem", borderRadius: "var(--radius)", fontSize: "0.8rem" }}>
+            <code>{finding.source_context}</code>
+          </pre>
+        </details>
       )}
 
       <div style={{ marginTop: "0.75rem", fontSize: "0.8rem", color: "var(--text-muted)" }}>

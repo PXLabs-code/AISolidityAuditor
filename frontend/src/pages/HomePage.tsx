@@ -49,11 +49,11 @@ export default function HomePage() {
     <div className="container">
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
         <h1 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: "0.5rem" }}>
-          AI Smart Contract Audit
+          Solidity Security Triage Assistant
         </h1>
         <p style={{ color: "var(--text-muted)", maxWidth: 560, margin: "0 auto" }}>
-          Upload a Solidity project ZIP for Slither static analysis and AI-powered
-          explanations, then get an audit report automatically.
+          Slither-based static analysis with AI-assisted explanations for developer
+          education and early risk review.
         </p>
       </div>
 
@@ -134,7 +134,7 @@ export default function HomePage() {
           disabled={loading || !file}
           onClick={onSubmit}
         >
-          {loading ? "Uploading..." : "Start Audit"}
+          {loading ? "Uploading..." : "Start Triage"}
         </button>
       </div>
     </div>

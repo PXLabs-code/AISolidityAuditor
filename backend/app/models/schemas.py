@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -45,6 +45,8 @@ class AIExplanation(BaseModel):
     ai_success: bool = False
     provider: Optional[str] = None
     error: Optional[str] = None
+    manual_review_required: bool = False
+    confidence: Literal["low", "medium", "high"] = "low"
 
 
 class Finding(BaseModel):
@@ -56,6 +58,9 @@ class Finding(BaseModel):
     function: Optional[str] = None
     file: Optional[str] = None
     line: Optional[int] = None
+    source_context: Optional[str] = None
+    source_start_line: Optional[int] = None
+    source_end_line: Optional[int] = None
     ai: AIExplanation = Field(default_factory=AIExplanation)
     ai_expanded: bool = True
 

@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 
 from app.models.schemas import AuditStatus
-from app.services import ai, report, slither, storage
+from app.services import ai, report, slither, source_context, storage
 from app.services.report import build_summary
 
 logger = logging.getLogger(__name__)
@@ -35,6 +35,7 @@ async def run_audit_pipeline(
         raw = slither.run_slither(project_path, output_path)
         storage.save_json(task_id, "slither.json", raw)
         findings = slither.parse_slither_results(raw)
+        source_context.attach_source_context(findings, project_path)
 
         storage.update_status(
             task_id,
