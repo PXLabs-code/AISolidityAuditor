@@ -40,9 +40,10 @@ Grant funding is requested to validate, harden, demonstrate, and release this MV
    - Add end-to-end Action tests and CI validation for readiness artifact generation.
    - Document mode usage, limitations, and reviewer-facing evidence boundaries.
 
-2. **Run two public repo demos** — *status: 1 of 2 completed*
-   - Completed: [transmissions11/solmate](https://github.com/transmissions11/solmate) at a pinned commit, with published artifacts, an end-to-end Action run (SARIF code-scanning upload, artifacts, PR comment), and recorded evidence links.
-   - Within the grant period: a second demo (OpenZeppelin Contracts or Uniswap v4-core) and an optional third, each with commit SHA, setup assumptions, Slither counts, readiness counts, SARIF tags, and artifacts.
+2. **Run two public repo demos** — *status: 2 of 2 completed*
+   - [transmissions11/solmate](https://github.com/transmissions11/solmate) at `89365b8` — 5 Slither + 106 readiness findings (`src/`), [Action run #27331627981](https://github.com/PXLabs-code/AISolidityAuditor/actions/runs/27331627981).
+   - [OpenZeppelin/openzeppelin-contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) at `5fd1781` (`v5.6.1`) — 0 Slither + 609 readiness findings (`contracts/`), [Action run #27342242106](https://github.com/PXLabs-code/AISolidityAuditor/actions/runs/27342242106).
+   - Optional third demo (Uniswap v4-core) remains a stretch goal within the grant period.
 
 3. **Improve heuristic precision and false-positive handling**
    - Shipped: per-rule confidence levels, rule rationales, fork-candidate (EIP) linkage, inline `glamsterdam-ignore` suppression, and a `glamsterdam-baseline.json` suppression file.
@@ -76,7 +77,7 @@ Suggested allocation:
 - Readiness report and JSON contain readiness heuristics only.
 - SARIF merges both sources with distinct tool/source metadata and Glamsterdam tags on readiness rules only.
 - 30 existing Solidity fixtures continue to pass.
-- At least 2 public Solidity repositories have documented readiness demo runs — *1 completed (solmate, with end-to-end Action evidence); the second and an optional third are grant-period deliverables*.
+- At least 2 public Solidity repositories have documented readiness demo runs — *completed: solmate and OpenZeppelin Contracts v5.6.1; optional third (Uniswap v4-core) remains a stretch goal*.
 - Per-detector readiness false-positive rates are measured and published in the benchmark report — *measurement protocol published; classification is a grant-period deliverable*.
 - Tagged Action release is published.
 

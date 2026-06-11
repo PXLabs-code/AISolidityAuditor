@@ -36,7 +36,9 @@ The Glamsterdam readiness extension adds source-pattern tests for upgrade-readin
 
 Readiness rules are review prompts, not vulnerability claims, so their quality is reported separately from Slither detector accuracy. Each rule ships with an explicit confidence level, a rationale, and the fork candidates it tracks; low-confidence rules deliberately trade precision for recall.
 
-### Measured run: transmissions11/solmate `89365b8` (`src/` only)
+### Measured runs
+
+#### transmissions11/solmate `89365b8` (`src/` only)
 
 | Detector | Rule confidence | Matches | Notes |
 |----------|-----------------|--------:|-------|
@@ -46,6 +48,17 @@ Readiness rules are review prompts, not vulnerability claims, so their quality i
 | `glamsterdam-eth-transfer-assumption` | medium | 12 | value-bearing calls and 2300-gas-stipend patterns; most matches are directly relevant |
 | `glamsterdam-contract-size-watch` | low | 3 | file-size proxy; watch points only |
 | **Total** | | **106** | |
+
+#### OpenZeppelin/openzeppelin-contracts `5fd1781` / `v5.6.1` (`contracts/` only)
+
+| Detector | Rule confidence | Matches | Notes |
+|----------|-----------------|--------:|-------|
+| `glamsterdam-low-level-evm` | low | 449 | large audited library with extensive low-level helpers |
+| `glamsterdam-gas-sensitive-loop` | low | 104 | high-recall loop rule; most matches expect quick dismissal |
+| `glamsterdam-block-context` | medium | 34 | includes permit/oracle timing patterns worth manual review |
+| `glamsterdam-contract-size-watch` | low | 12 | file-size proxy |
+| `glamsterdam-eth-transfer-assumption` | medium | 10 | value-bearing call patterns |
+| **Total** | | **609** | Slither reported 0 High/Medium/Low on this pin (`include_informational: false`) |
 
 ### False-positive definition and measurement protocol
 

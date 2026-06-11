@@ -1,0 +1,21 @@
+{
+  "demo_id": "openzeppelin-contracts",
+  "repo": "https://github.com/OpenZeppelin/openzeppelin-contracts",
+  "commit": "5fd1781b1454fd1ef8e722282f86f9293cacf256",
+  "project_path_slither": ".",
+  "project_path_readiness": "contracts",
+  "mode": "glamsterdam-readiness",
+  "action_workflow": ".github/workflows/real-project-demo.yml",
+  "action_run_url": "https://github.com/PXLabs-code/AISolidityAuditor/actions/runs/27342242106",
+  "generated_at": "2026-06-11T11:03:41.974984+00:00",
+  "slither_findings_total": 0,
+  "readiness_findings_total": 609,
+  "readiness_findings_by_detector": {
+    "glamsterdam-block-context": 34,
+    "glamsterdam-contract-size-watch": 12,
+    "glamsterdam-gas-sensitive-loop": 104,
+    "glamsterdam-low-level-evm": 449,
+    "glamsterdam-eth-transfer-assumption": 10
+  },
+  "glamsterdam_sarif_rules": 5
+}

@@ -4,13 +4,13 @@ This guide demonstrates AISolidityAuditor on public Solidity repositories, not o
 
 ## Demo status
 
-The grant one-pager targets at least 2 public repository demos. Current honest status: **1 completed, 2 planned within the grant period**.
+The grant one-pager targets at least 2 public repository demos. Current status: **2 completed** (optional third: Uniswap v4-core).
 
 | Repository | Status | Commit | Action run | Artifacts |
 |------------|--------|--------|------------|-----------|
 | [transmissions11/solmate](https://github.com/transmissions11/solmate) | **Completed** | `89365b880c4f3c786bdd453d4b8e8fe410344a69` | [#27331627981](https://github.com/PXLabs-code/AISolidityAuditor/actions/runs/27331627981) | [demo artifacts](demo-artifacts/transmissions11-solmate/89365b880c4f3c786bdd453d4b8e8fe410344a69/README.md) |
-| `OpenZeppelin/openzeppelin-contracts` | Planned (grant period) | — | — | — |
-| `Uniswap/v4-core` | Planned (grant period, optional third) | — | — | — |
+| [OpenZeppelin/openzeppelin-contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) | **Completed** | `5fd1781b1454fd1ef8e722282f86f9293cacf256` (`v5.6.1`) | [#27342242106](https://github.com/PXLabs-code/AISolidityAuditor/actions/runs/27342242106) | [demo artifacts](demo-artifacts/openzeppelin-contracts/5fd1781b1454fd1ef8e722282f86f9293cacf256/README.md) |
+| `Uniswap/v4-core` | Planned (optional third) | — | — | — |
 
 Reproduce or refresh a demo locally:
 
