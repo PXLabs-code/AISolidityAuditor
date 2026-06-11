@@ -15,7 +15,7 @@ inputs:
     required: false
     default: ""
   ai_provider:
-    description: AI provider to use: openai, claude, or deepseek.
+    description: "AI provider to use: openai, claude, or deepseek."
     required: false
     default: openai
   mode:
@@ -66,8 +66,6 @@ runs:
       uses: actions/setup-python@v5
       with:
         python-version: "3.11"
-        cache: pip
-        cache-dependency-path: ${{ github.action_path }}/backend/requirements*.txt
 
     - name: Install Python dependencies
       shell: bash
