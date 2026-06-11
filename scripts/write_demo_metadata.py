@@ -10,6 +10,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
+def _demo_title(demo_id: str, repo: str) -> str:
+    if demo_id == "transmissions11-solmate":
+        return "transmissions11/solmate"
+    if demo_id == "openzeppelin-contracts":
+        return "OpenZeppelin/openzeppelin-contracts"
+    slug = repo.rstrip("/").removesuffix(".git").split("/")[-2:]
+    return "/".join(slug) if len(slug) == 2 else demo_id
+
+
 def write_metadata(
     output_dir: Path,
     *,
@@ -52,8 +61,9 @@ def write_metadata(
         encoding="utf-8",
     )
 
+    title = _demo_title(demo_id, repo)
     readme_lines = [
-        "# Real-project demo: transmissions11/solmate",
+        f"# Real-project demo: {title}",
         "",
         "## Repository",
         "",

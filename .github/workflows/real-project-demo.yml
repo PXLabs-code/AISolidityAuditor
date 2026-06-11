@@ -10,19 +10,48 @@ on:
         type: choice
         options:
           - transmissions11-solmate
+          - openzeppelin-contracts
 
 permissions:
   contents: read
 
 jobs:
-  solmate-glamsterdam-readiness:
+  glamsterdam-readiness-demo:
     runs-on: ubuntu-latest
     env:
-      DEMO_ID: transmissions11-solmate
-      SOLMATE_COMMIT: 89365b880c4f3c786bdd453d4b8e8fe410344a69
-      OUTPUT_DIR: docs/demo-artifacts/transmissions11-solmate/89365b880c4f3c786bdd453d4b8e8fe410344a69
+      DEMO_ID: ${{ inputs.demo }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Resolve demo configuration
+        id: config
+        run: |
+          case "${DEMO_ID}" in
+            transmissions11-solmate)
+              echo "repo_url=https://github.com/transmissions11/solmate.git" >> "$GITHUB_OUTPUT"
+              echo "repo_slug=https://github.com/transmissions11/solmate" >> "$GITHUB_OUTPUT"
+              echo "commit=89365b880c4f3c786bdd453d4b8e8fe410344a69" >> "$GITHUB_OUTPUT"
+              echo "cache_dir=.cache/solmate" >> "$GITHUB_OUTPUT"
+              echo "readiness_path=src" >> "$GITHUB_OUTPUT"
+              ;;
+            openzeppelin-contracts)
+              echo "repo_url=https://github.com/OpenZeppelin/openzeppelin-contracts.git" >> "$GITHUB_OUTPUT"
+              echo "repo_slug=https://github.com/OpenZeppelin/openzeppelin-contracts" >> "$GITHUB_OUTPUT"
+              echo "commit=5fd1781b1454fd1ef8e722282f86f9293cacf256" >> "$GITHUB_OUTPUT"
+              echo "cache_dir=.cache/openzeppelin-contracts" >> "$GITHUB_OUTPUT"
+              echo "readiness_path=contracts" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unknown demo: ${DEMO_ID}" >&2
+              exit 1
+              ;;
+          esac
+          echo "output_dir=docs/demo-artifacts/${DEMO_ID}/${{ steps.config.outputs.commit }}" >> "$GITHUB_OUTPUT" || true
+
+      - name: Set output directory
+        id: paths
+        run: |
+          echo "output_dir=docs/demo-artifacts/${DEMO_ID}/${{ steps.config.outputs.commit }}" >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-python@v5
         with:
@@ -41,21 +70,29 @@ jobs:
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
 
-      - name: Check out solmate at pinned commit
+      - name: Check out target repository at pinned commit
+        env:
+          REPO_URL: ${{ steps.config.outputs.repo_url }}
+          PIN_COMMIT: ${{ steps.config.outputs.commit }}
+          CACHE_DIR: ${{ steps.config.outputs.cache_dir }}
         run: |
-          git clone https://github.com/transmissions11/solmate.git .cache/solmate
-          cd .cache/solmate
-          git checkout "${SOLMATE_COMMIT}"
+          git clone "${REPO_URL}" "${CACHE_DIR}"
+          cd "${CACHE_DIR}"
+          git checkout "${PIN_COMMIT}"
 
-      - name: Build solmate
-        working-directory: .cache/solmate
+      - name: Build target project
+        working-directory: ${{ steps.config.outputs.cache_dir }}
         run: forge build
 
       - name: Run Glamsterdam readiness Action script
+        env:
+          CACHE_DIR: ${{ steps.config.outputs.cache_dir }}
+          READINESS_PATH: ${{ steps.config.outputs.readiness_path }}
+          OUTPUT_DIR: ${{ steps.paths.outputs.output_dir }}
         run: |
           python scripts/github_action_audit.py \
-            --project "$GITHUB_WORKSPACE/.cache/solmate" \
-            --readiness-project "$GITHUB_WORKSPACE/.cache/solmate/src" \
+            --project "$GITHUB_WORKSPACE/${CACHE_DIR}" \
+            --readiness-project "$GITHUB_WORKSPACE/${CACHE_DIR}/${READINESS_PATH}" \
             --output-dir "$GITHUB_WORKSPACE/${OUTPUT_DIR}" \
             --mode glamsterdam-readiness \
             --include-informational false
@@ -63,18 +100,22 @@ jobs:
       - name: Write demo metadata
         env:
           GITHUB_ACTION_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          OUTPUT_DIR: ${{ steps.paths.outputs.output_dir }}
+          REPO_SLUG: ${{ steps.config.outputs.repo_slug }}
+          PIN_COMMIT: ${{ steps.config.outputs.commit }}
+          READINESS_PATH: ${{ steps.config.outputs.readiness_path }}
         run: |
           python scripts/write_demo_metadata.py \
             --output-dir "$GITHUB_WORKSPACE/${OUTPUT_DIR}" \
             --demo-id "${DEMO_ID}" \
-            --repo "https://github.com/transmissions11/solmate" \
-            --commit "${SOLMATE_COMMIT}" \
+            --repo "${REPO_SLUG}" \
+            --commit "${PIN_COMMIT}" \
             --project-path "." \
-            --readiness-path "src" \
+            --readiness-path "${READINESS_PATH}" \
             --action-run-url "${GITHUB_ACTION_RUN_URL}"
 
       - name: Upload demo artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: real-project-demo-${{ env.DEMO_ID }}-${{ env.SOLMATE_COMMIT }}
-          path: ${{ env.OUTPUT_DIR }}/
+          name: real-project-demo-${{ env.DEMO_ID }}-${{ steps.config.outputs.commit }}
+          path: ${{ steps.paths.outputs.output_dir }}/

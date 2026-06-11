@@ -24,7 +24,19 @@ DEFAULT_DEMOS = {
         "commit": "89365b880c4f3c786bdd453d4b8e8fe410344a69",
         "project_subpath": ".",
         "readiness_subpath": "src",
+        "title": "transmissions11/solmate",
         "notes": "Foundry project. Slither runs on repo root after `forge build`; readiness heuristics scan `src/` only.",
+    },
+    "openzeppelin-contracts": {
+        "repo": "https://github.com/OpenZeppelin/openzeppelin-contracts.git",
+        "commit": "5fd1781b1454fd1ef8e722282f86f9293cacf256",
+        "project_subpath": ".",
+        "readiness_subpath": "contracts",
+        "title": "OpenZeppelin/openzeppelin-contracts",
+        "notes": (
+            "Foundry project (v5.6.1 tag). Slither runs on repo root after `forge build`; "
+            "readiness heuristics scan `contracts/` only (excludes test/mocks in other trees)."
+        ),
     },
 }
 
@@ -83,14 +95,17 @@ def _write_summary(
     readiness_count: int,
     action_run_url: str | None,
 ) -> None:
+    title = config.get("title", demo_id)
+    readiness_subpath = config.get("readiness_subpath", config["project_subpath"])
     lines = [
-        "# Real-project demo: transmissions11/solmate",
+        f"# Real-project demo: {title}",
         "",
         "## Repository",
         "",
         f"- **Repo**: `{config['repo']}`",
         f"- **Commit SHA**: `{config['commit']}`",
-        f"- **Project path**: `{config['project_subpath']}`",
+        f"- **Project path (Slither)**: `{config['project_subpath']}`",
+        f"- **Project path (readiness heuristics)**: `{readiness_subpath}`",
         f"- **Demo ID**: `{demo_id}`",
         "",
         "## Action run",
@@ -101,7 +116,7 @@ def _write_summary(
     else:
         lines.append(
             "- **Workflow run**: trigger `.github/workflows/real-project-demo.yml` "
-            "with `demo=transmissions11-solmate` to populate the GitHub Actions URL."
+            f"with `demo={demo_id}` to populate the GitHub Actions URL."
         )
     lines.extend(
         [
