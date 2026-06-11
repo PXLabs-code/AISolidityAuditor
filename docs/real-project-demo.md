@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: PXLabs-code/AISolidityAuditor@63b8874d67f81aad88b944dca56cf640aa3427d2
+      - uses: PXLabs-code/AISolidityAuditor@371a1b5d87425296dfec289dcc822ebcd15d0df1
         with:
           project_path: .
           readiness_path: src

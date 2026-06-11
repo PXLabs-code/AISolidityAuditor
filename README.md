@@ -158,7 +158,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: PXLabs-code/AISolidityAuditor@63b8874d67f81aad88b944dca56cf640aa3427d2
+      - uses: PXLabs-code/AISolidityAuditor@371a1b5d87425296dfec289dcc822ebcd15d0df1
         with:
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
           ai_provider: openai
@@ -168,7 +168,7 @@ jobs:
 For Claude:
 
 ```yaml
-- uses: PXLabs-code/AISolidityAuditor@63b8874d67f81aad88b944dca56cf640aa3427d2
+- uses: PXLabs-code/AISolidityAuditor@371a1b5d87425296dfec289dcc822ebcd15d0df1
   with:
     ai_provider: claude
     anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -177,7 +177,7 @@ For Claude:
 For DeepSeek:
 
 ```yaml
-- uses: PXLabs-code/AISolidityAuditor@63b8874d67f81aad88b944dca56cf640aa3427d2
+- uses: PXLabs-code/AISolidityAuditor@371a1b5d87425296dfec289dcc822ebcd15d0df1
   with:
     ai_provider: deepseek
     deepseek_api_key: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -186,7 +186,7 @@ For DeepSeek:
 For a no-AI CI gate that fails on High findings and keeps SARIF focused on primary risks:
 
 ```yaml
-- uses: PXLabs-code/AISolidityAuditor@63b8874d67f81aad88b944dca56cf640aa3427d2
+- uses: PXLabs-code/AISolidityAuditor@371a1b5d87425296dfec289dcc822ebcd15d0df1
   with:
     upload_sarif: "true"
     comment_on_pr: "true"
@@ -197,7 +197,7 @@ For a no-AI CI gate that fails on High findings and keeps SARIF focused on prima
 For a Glamsterdam readiness run aligned with the current ESP Wishlist. Set `readiness_path` to limit heuristic scanning to application source (for example `src/` in Foundry repos) while Slither still analyzes the full `project_path`:
 
 ```yaml
-- uses: PXLabs-code/AISolidityAuditor@63b8874d67f81aad88b944dca56cf640aa3427d2
+- uses: PXLabs-code/AISolidityAuditor@371a1b5d87425296dfec289dcc822ebcd15d0df1
   with:
     project_path: .
     readiness_path: src
