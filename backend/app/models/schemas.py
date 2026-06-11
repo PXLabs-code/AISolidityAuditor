@@ -45,7 +45,7 @@ class AIExplanation(BaseModel):
     ai_success: bool = False
     provider: Optional[str] = None
     error: Optional[str] = None
-    manual_review_required: bool = False
+    manual_review_required: bool = True
     confidence: Literal["low", "medium", "high"] = "low"
 
 
@@ -54,6 +54,7 @@ class Finding(BaseModel):
     detector: str
     severity: Severity
     description: str
+    source: Literal["slither", "readiness-heuristic"] = "slither"
     contract: Optional[str] = None
     function: Optional[str] = None
     file: Optional[str] = None

@@ -24,12 +24,13 @@ WORKDIR /app
 COPY backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY backend/ ./backend/
+COPY backend/app ./backend/app
 COPY --from=frontend-build /app/frontend/dist ./frontend/dist/
 
 ENV DATA_DIR=/data/jobs
 ENV PYTHONPATH=/app/backend
 ENV CORS_ORIGINS=*
+ENV PYTHONDONTWRITEBYTECODE=1
 
 RUN mkdir -p /data/jobs
 

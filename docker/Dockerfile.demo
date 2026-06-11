@@ -1,0 +1,25 @@
+FROM python:3.11-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://github.com/ethereum/solidity/releases/download/v0.8.20/solc-static-linux \
+    -o /usr/local/bin/solc && chmod +x /usr/local/bin/solc
+
+ENV PATH="/root/.foundry/bin:${PATH}"
+RUN curl -L https://foundry.paradigm.xyz | bash \
+    && foundryup
+
+WORKDIR /workspace
+COPY backend/requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+COPY scripts/github_action_audit.py /workspace/scripts/github_action_audit.py
+COPY backend/app /workspace/backend/app
+
+ENV PYTHONPATH=/workspace/backend
+
+ENTRYPOINT ["python", "/workspace/scripts/github_action_audit.py"]

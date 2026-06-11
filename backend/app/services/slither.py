@@ -48,6 +48,7 @@ def check_solc_available() -> bool:
 
 
 def run_slither(project_path: Path, output_path: Path) -> dict[str, Any]:
+    workdir = project_path if project_path.is_dir() else project_path.parent
     cmd = [
         "slither",
         str(project_path),
@@ -64,7 +65,7 @@ def run_slither(project_path: Path, output_path: Path) -> dict[str, Any]:
             capture_output=True,
             text=True,
             timeout=settings.slither_timeout_sec,
-            cwd=str(project_path),
+            cwd=str(workdir),
         )
     except subprocess.TimeoutExpired as exc:
         raise RuntimeError(

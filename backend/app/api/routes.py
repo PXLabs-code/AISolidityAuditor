@@ -46,6 +46,7 @@ async def health_check():
             "ai_provider": settings.ai_provider,
             "openai_configured": bool(settings.openai_api_key),
             "claude_configured": bool(settings.anthropic_api_key),
+            "deepseek_configured": bool(settings.deepseek_api_key),
         },
     )
 
@@ -58,13 +59,17 @@ async def create_audit(
     ai_provider: Optional[str] = Form(None),
 ):
     provider = (ai_provider or settings.ai_provider).lower()
-    if provider not in {"openai", "claude"}:
+    if provider not in {"openai", "claude", "deepseek"}:
         raise HTTPException(status_code=400, detail=f"Unsupported AI provider: {provider}")
 
     task_id, job_dir = storage.create_job(file.filename or "project.zip")
     project_path = await upload.save_and_extract_zip(file, job_dir)
 
-    configured_key = settings.anthropic_api_key if provider == "claude" else settings.openai_api_key
+    configured_key = {
+        "claude": settings.anthropic_api_key,
+        "deepseek": settings.deepseek_api_key,
+        "openai": settings.openai_api_key,
+    }[provider]
     effective_key = api_key or configured_key or None
 
     background_tasks.add_task(_run_audit_task, task_id, project_path, effective_key, provider)

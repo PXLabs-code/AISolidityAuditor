@@ -54,6 +54,40 @@ async def test_explain_finding_mock_response():
     assert result.title == "Reentrancy risk"
     assert "checks-effects-interactions" in result.recommendation
     assert result.confidence == "medium"
+    assert result.manual_review_required is True
+
+
+@pytest.mark.asyncio
+async def test_explain_finding_forces_manual_review_even_if_model_says_false():
+    mock_response = {
+        "choices": [
+            {
+                "message": {
+                    "content": json.dumps(
+                        {
+                            "title": "Reentrancy risk",
+                            "problem": "External call executes before state update",
+                            "impact": "Attacker may drain funds repeatedly",
+                            "recommendation": "Follow checks-effects-interactions pattern",
+                            "manual_review_required": False,
+                        }
+                    )
+                }
+            }
+        ]
+    }
+
+    with patch("app.services.ai.httpx.AsyncClient") as mock_client_cls:
+        mock_client = AsyncMock()
+        mock_client_cls.return_value.__aenter__.return_value = mock_client
+        mock_resp = MagicMock()
+        mock_resp.json.return_value = mock_response
+        mock_client.post = AsyncMock(return_value=mock_resp)
+
+        result = await explain_finding(_sample_finding(), api_key="test-key")
+
+    assert result.ai_success is True
+    assert result.manual_review_required is True
 
 
 @pytest.mark.asyncio
@@ -112,6 +146,21 @@ async def test_explain_findings_records_provider_failure():
     assert result[0].ai.ai_success is False
     assert result[0].ai.provider == "claude"
     assert result[0].ai.error == "No API key configured for claude"
+
+
+@pytest.mark.asyncio
+async def test_explain_findings_records_deepseek_provider_failure():
+    finding = _sample_finding()
+
+    with patch("app.services.ai.settings") as mock_settings:
+        mock_settings.ai_provider = "deepseek"
+        mock_settings.deepseek_api_key = ""
+        mock_settings.max_ai_findings = 20
+        result = await explain_findings([finding], api_key="")
+
+    assert result[0].ai.ai_success is False
+    assert result[0].ai.provider == "deepseek"
+    assert result[0].ai.error == "No API key configured for deepseek"
 
 
 @pytest.mark.asyncio

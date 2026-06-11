@@ -7,7 +7,7 @@ export default function HomePage() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [apiKey, setApiKey] = useState("");
-  const [aiProvider, setAiProvider] = useState<"openai" | "claude">("openai");
+  const [aiProvider, setAiProvider] = useState<"openai" | "claude" | "deepseek">("openai");
   const [dragging, setDragging] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -105,9 +105,10 @@ export default function HomePage() {
           <label style={{ display: "block", marginBottom: "0.4rem", fontSize: "0.9rem" }}>
             AI Provider
           </label>
-          <select value={aiProvider} onChange={(e) => setAiProvider(e.target.value as "openai" | "claude")}>
+          <select value={aiProvider} onChange={(e) => setAiProvider(e.target.value as "openai" | "claude" | "deepseek")}>
             <option value="openai">OpenAI compatible</option>
             <option value="claude">Claude</option>
+            <option value="deepseek">DeepSeek</option>
           </select>
         </div>
 
@@ -117,7 +118,7 @@ export default function HomePage() {
           </label>
           <input
             type="password"
-            placeholder={aiProvider === "claude" ? "sk-ant-..." : "sk-..."}
+            placeholder={aiProvider === "claude" ? "sk-ant-..." : aiProvider === "deepseek" ? "sk-..." : "sk-..."}
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
           />

@@ -50,7 +50,7 @@ def test_generate_report():
     assert "reentrancy-eth" in report
     assert "Top risks" in report
     assert "Slither finding" in report
-    assert "AI explanation" in report
+    assert "Assistive AI explanation" in report
     assert "Source context" in report
     assert "function withdraw" in report
     assert "AI confidence" in report
@@ -99,7 +99,7 @@ def test_generate_report_ai_failure_reason():
     report = generate_report(meta, [finding])
 
     assert "| AI explained | 0 |" in report
-    assert "AI explanation**: Unavailable (No API key configured for openai)" in report
+    assert "Assistive AI explanation**: Unavailable (No API key configured for openai)" in report
 
 
 def test_generate_report_sanitizes_multiline_ai_error():
@@ -158,9 +158,75 @@ def test_generate_report_folds_informational_and_optimization_findings():
 
 def test_generate_sarif():
     sarif = generate_sarif([_finding_with_ai()])
+    rule = sarif["runs"][0]["tool"]["driver"]["rules"][0]
+    result = sarif["runs"][0]["results"][0]
 
     assert sarif["version"] == "2.1.0"
-    run = sarif["runs"][0]
-    assert run["tool"]["driver"]["name"] == "AISolidityAuditor"
-    assert run["results"][0]["ruleId"] == "reentrancy-eth"
-    assert run["results"][0]["level"] == "error"
+    assert sarif["runs"][0]["tool"]["driver"]["name"] == "AISolidityAuditor"
+    assert result["ruleId"] == "reentrancy-eth"
+    assert result["level"] == "error"
+    assert rule["properties"]["tool"] == "Slither"
+    assert rule["properties"]["source"] == "slither"
+    assert result["properties"]["tool"] == "Slither"
+    assert "glamsterdam" not in rule["properties"]["tags"]
+
+
+def test_generate_report_excludes_readiness_heuristics():
+    slither_finding = _finding_with_ai()
+    readiness_finding = Finding(
+        id="glamsterdam-1",
+        detector="glamsterdam-block-context",
+        severity=Severity.INFORMATIONAL,
+        description="Block context dependency.",
+        file="Readiness.sol",
+        line=9,
+        source="readiness-heuristic",
+    )
+    meta = AuditMeta(
+        task_id="readiness-task",
+        status=AuditStatus.COMPLETED,
+        filename="readiness.zip",
+        created_at="2026-01-01T00:00:00+00:00",
+        updated_at="2026-01-01T00:00:00+00:00",
+    )
+
+    report = generate_report(meta, [slither_finding, readiness_finding])
+
+    assert "reentrancy-eth" in report
+    assert "glamsterdam-block-context" not in report
+    assert "Readiness heuristic" not in report
+
+
+def test_generate_sarif_mixed_sources_keep_distinct_tool_metadata():
+    slither_finding = _finding_with_ai()
+    readiness_finding = Finding(
+        id="glamsterdam-1",
+        detector="glamsterdam-block-context",
+        severity=Severity.INFORMATIONAL,
+        description="Block context dependency.",
+        file="Readiness.sol",
+        line=9,
+        source="readiness-heuristic",
+    )
+    glamsterdam_tags = [
+        "glamsterdam",
+        "gas-repricing",
+        "evm-compatibility",
+        "eth-transfer-logs",
+        "contract-size",
+    ]
+
+    sarif = generate_sarif(
+        [slither_finding, readiness_finding],
+        readiness_tags=glamsterdam_tags,
+    )
+    rules = {rule["id"]: rule for rule in sarif["runs"][0]["tool"]["driver"]["rules"]}
+
+    assert rules["reentrancy-eth"]["properties"]["tool"] == "Slither"
+    assert rules["reentrancy-eth"]["properties"]["source"] == "slither"
+    assert "glamsterdam" not in rules["reentrancy-eth"]["properties"]["tags"]
+
+    readiness_rule = rules["glamsterdam-block-context"]
+    assert readiness_rule["properties"]["tool"] == "AISolidityAuditor-GlamsterdamReadiness"
+    assert readiness_rule["properties"]["source"] == "readiness-heuristic"
+    assert all(tag in readiness_rule["properties"]["tags"] for tag in glamsterdam_tags)

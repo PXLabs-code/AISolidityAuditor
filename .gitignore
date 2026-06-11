@@ -8,6 +8,7 @@ venv/
 # Data
 data/
 backend/data/
+.cache/
 
 # Build
 frontend/dist/

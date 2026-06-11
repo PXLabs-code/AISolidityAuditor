@@ -3,6 +3,9 @@ asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 testpaths = ["tests"]
 pythonpath = ["."]
+markers = [
+    "integration: tests that invoke external tools such as slither and solc",
+]
 
 [tool.ruff]
 target-version = "py311"

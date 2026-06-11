@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import time
 from pathlib import Path
@@ -32,7 +33,7 @@ async def run_audit_pipeline(
 
         slither_version = version or "unknown"
         output_path = storage.get_job_dir(task_id) / "slither.json"
-        raw = slither.run_slither(project_path, output_path)
+        raw = await asyncio.to_thread(slither.run_slither, project_path, output_path)
         storage.save_json(task_id, "slither.json", raw)
         findings = slither.parse_slither_results(raw)
         source_context.attach_source_context(findings, project_path)

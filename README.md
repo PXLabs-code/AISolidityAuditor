@@ -21,6 +21,7 @@ AISolidityAuditor turns Slither output into developer-friendly Markdown reports,
 - [Example reports](#example-reports)
 - [GitHub Action](#github-action)
 - [Security model](#security-model)
+- [Evaluation and benchmark](#evaluation-and-benchmark)
 - [Limitations](#limitations)
 - [Roadmap](#roadmap)
 - [Development](#development)
@@ -60,11 +61,12 @@ This project is designed as open infrastructure rather than a closed audit produ
 |---------|-------------|
 | ZIP upload | Multi-file Solidity projects with safety limits and file allowlists |
 | Slither triage | Static analysis, finding deduplication, and severity ordering |
-| AI assistance | OpenAI-compatible or Claude explanations grounded in source context |
+| AI assistance | OpenAI-compatible, Claude, or DeepSeek explanations grounded in source context |
 | Markdown report | Top risks, source snippets, folded informational findings |
 | SARIF output | GitHub code scanning compatible results |
-| GitHub Action | CI triage mode with artifacts, SARIF upload, and optional PR comment |
-| Evaluation fixtures | 10 sample contracts with expected detectors and explanation keywords |
+| GitHub Action | CI triage mode with artifacts, SARIF upload, optional PR comment, and configurable failure policy |
+| Evaluation fixtures | 30 sample contracts with expected detectors, severities, SARIF checks, and explanation keywords |
+| Glamsterdam readiness | Optional Action mode for Solidity upgrade-readiness triage around gas, EVM, ETH transfer logs, block context, and contract-size watch points |
 
 ## How it works
 
@@ -78,7 +80,7 @@ ZIP or GitHub workspace
   -> Markdown, findings JSON, Slither JSON, SARIF
 ```
 
-AI explanations are validated for required JSON fields and basic grounding against the Slither finding and source context. Missing or detached explanations are marked low-confidence and require manual review.
+AI explanations are validated for required JSON fields and basic grounding against the Slither finding and source context. Missing or detached explanations are marked low-confidence. All explanations are assistive only and always require manual review.
 
 ## Quick start
 
@@ -89,6 +91,7 @@ cd AISolidityAuditor
 cp backend/.env.example backend/.env
 # Optional: set OPENAI_API_KEY=sk-...
 # Or set AI_PROVIDER=claude and ANTHROPIC_API_KEY=sk-ant-...
+# Or set AI_PROVIDER=deepseek and DEEPSEEK_API_KEY=sk-...
 
 docker compose up --build
 ```
@@ -110,7 +113,7 @@ A vulnerable reentrancy example is included:
 |------|---------|
 | `examples/reentrancy/Reentrancy.sol` | Source contract |
 | `examples/reentrancy-example.zip` | Ready-to-upload ZIP |
-| `examples/evaluation/` | 10 evaluation fixtures covering common risk patterns |
+| `examples/evaluation/` | 30 evaluation fixtures covering common risk patterns |
 
 See [docs/demo-script.md](docs/demo-script.md) for a short demo flow.
 
@@ -169,6 +172,43 @@ For Claude:
     anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
 
+For DeepSeek:
+
+```yaml
+- uses: PXLabs-code/AISolidityAuditor-action@v1
+  with:
+    ai_provider: deepseek
+    deepseek_api_key: ${{ secrets.DEEPSEEK_API_KEY }}
+```
+
+For a no-AI CI gate that fails on High findings and keeps SARIF focused on primary risks:
+
+```yaml
+- uses: PXLabs-code/AISolidityAuditor-action@v1
+  with:
+    upload_sarif: "true"
+    comment_on_pr: "true"
+    fail_on_high: "true"
+    include_informational: "false"
+```
+
+For a Glamsterdam readiness run aligned with the current ESP Wishlist:
+
+```yaml
+- uses: PXLabs-code/AISolidityAuditor-action@v1
+  with:
+    mode: glamsterdam-readiness
+    upload_sarif: "true"
+    comment_on_pr: "true"
+    include_informational: "false"
+```
+
+This mode emits the normal Slither triage artifacts plus:
+
+- `glamsterdam-readiness-report.md`
+- `glamsterdam-findings.json`
+- SARIF rule tags such as `glamsterdam`, `gas-repricing`, `evm-compatibility`, `eth-transfer-logs`, and `contract-size`
+
 ## Security model
 
 Uploaded ZIP files are treated as untrusted input.
@@ -178,11 +218,24 @@ Uploaded ZIP files are treated as untrusted input.
 - Allows only Solidity sources and common project configuration files.
 - Runs Slither with `SLITHER_TIMEOUT_SEC`.
 - Stores each job in an isolated directory.
+- Docker Compose uses a read-only root filesystem, tmpfs `/tmp`, dropped Linux capabilities, `no-new-privileges`, and process/memory/CPU limits.
 - Does not persist or log user-provided AI keys.
 - Preserves raw Slither output for independent review.
-- Marks every result as requiring manual review unless validated AI output says otherwise.
+- Marks every result as requiring manual review, including successful AI explanations.
 
-See [docs/threat-model.md](docs/threat-model.md).
+See [docs/threat-model.md](docs/threat-model.md) and [docs/sandbox.md](docs/sandbox.md).
+
+## Evaluation and benchmark
+
+The evaluation suite turns `examples/evaluation/` into a CI-backed harness. It runs Slither against the fixture contracts, checks expected detector IDs and severities, verifies SARIF generation, and validates deterministic grounded explanation payloads through the same grounding guard used for AI responses.
+
+See [docs/benchmark-report.md](docs/benchmark-report.md) for the raw Slither vs AISolidityAuditor benchmark plan and the fixture expansion backlog.
+
+## ESP Wishlist alignment
+
+The current small-grant scope is a **Glamsterdam Solidity Readiness Triage Toolkit**. It builds on AISolidityAuditor to help Ethereum builders review Solidity projects for patterns that may need attention as Glamsterdam candidates evolve, including gas repricing, EVM/opcode assumptions, native ETH transfer logs, block context assumptions, and contract-size discussions.
+
+See [docs/grant-one-pager.md](docs/grant-one-pager.md) for the 6-8 week grant scope.
 
 ## Limitations
 
@@ -198,7 +251,7 @@ Near-term:
 
 1. Publish a dedicated `AISolidityAuditor-action` repository and `v1` tag.
 2. Add SARIF severity tuning and detector-specific docs links.
-3. Add evaluation CI that runs fixtures and checks expected detectors.
+3. Add 2-3 real-project Action demo runs with report, JSON, and SARIF artifacts.
 4. Improve Foundry and Hardhat project detection.
 5. Add generated example reports for more detector classes.
 
@@ -250,12 +303,15 @@ Open `http://localhost:5173`; Vite proxies `/api` to the backend.
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `DATA_DIR` | `./data/jobs` | Job storage directory |
-| `AI_PROVIDER` | `openai` | Default AI provider (`openai` or `claude`) |
+| `AI_PROVIDER` | `openai` | Default AI provider (`openai`, `claude`, or `deepseek`) |
 | `OPENAI_API_KEY` | empty | OpenAI-compatible API key |
 | `OPENAI_BASE_URL` | `https://api.openai.com/v1` | OpenAI-compatible endpoint |
 | `OPENAI_MODEL` | `gpt-4o-mini` | OpenAI-compatible model |
 | `ANTHROPIC_API_KEY` | empty | Claude API key |
 | `CLAUDE_MODEL` | `claude-3-5-haiku-latest` | Claude model |
+| `DEEPSEEK_API_KEY` | empty | DeepSeek API key |
+| `DEEPSEEK_BASE_URL` | `https://api.deepseek.com/v1` | DeepSeek OpenAI-compatible endpoint |
+| `DEEPSEEK_MODEL` | `deepseek-chat` | DeepSeek model |
 | `MAX_UPLOAD_MB` | `10` | Maximum ZIP upload size |
 | `MAX_ZIP_FILES` | `200` | Maximum extracted file count |
 | `MAX_ZIP_FILE_MB` | `2` | Maximum uncompressed size for one ZIP member |
@@ -279,7 +335,30 @@ cd ..
 docker build -f docker/Dockerfile .
 ```
 
-The test suite covers upload safety, Slither parsing, finding deduplication, AI output validation, source-context extraction, SARIF generation, report generation, and evaluation fixture manifest integrity.
+Docker-based verification is useful for grant reviewers and contributors who do not have local Python, Node, Slither, or solc installed:
+
+```bash
+# Build the production image, including frontend assets and Slither runtime.
+docker build -f docker/Dockerfile .
+
+# Run backend tests in a disposable Python container with solc installed.
+docker run --rm -v "$PWD:/workspace" -w /workspace/backend python:3.11-slim bash -lc "\
+  apt-get update && apt-get install -y --no-install-recommends curl git build-essential && \
+  curl -fsSL https://github.com/ethereum/solidity/releases/download/v0.8.20/solc-static-linux -o /usr/local/bin/solc && \
+  chmod +x /usr/local/bin/solc && \
+  pip install -r requirements-dev.txt && \
+  ruff check app tests && \
+  pytest tests -v"
+```
+
+PowerShell equivalent:
+
+```powershell
+docker build -f docker/Dockerfile .
+docker run --rm -v "${PWD}:/workspace" -w /workspace/backend python:3.11-slim bash -lc "apt-get update && apt-get install -y --no-install-recommends curl git build-essential && curl -fsSL https://github.com/ethereum/solidity/releases/download/v0.8.20/solc-static-linux -o /usr/local/bin/solc && chmod +x /usr/local/bin/solc && pip install -r requirements-dev.txt && ruff check app tests && pytest tests -v"
+```
+
+The test suite covers upload safety, Slither parsing, finding deduplication, AI output validation, source-context extraction, SARIF generation, report generation, evaluation fixture metadata, and CI-backed evaluation runs when Slither and solc are available.
 
 ## Documentation
 
@@ -287,7 +366,10 @@ The test suite covers upload safety, Slither parsing, finding deduplication, AI 
 |----------|-------------|
 | [docs/architecture.md](docs/architecture.md) | System design and data flow |
 | [docs/threat-model.md](docs/threat-model.md) | ZIP upload security model |
+| [docs/sandbox.md](docs/sandbox.md) | Docker sandbox boundaries and hardening roadmap |
+| [docs/benchmark-report.md](docs/benchmark-report.md) | Evaluation and benchmark plan |
 | [docs/demo-script.md](docs/demo-script.md) | Demo recording guide |
+| [docs/real-project-demo.md](docs/real-project-demo.md) | Real public Solidity repository demo guide |
 | [docs/grant-one-pager.md](docs/grant-one-pager.md) | Ethereum grant summary |
 
 ## Disclaimer

@@ -1,0 +1,3216 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "AISolidityAuditor",
+          "informationUri": "https://github.com/PXLabs-code/AISolidityAuditor",
+          "rules": [
+            {
+              "id": "glamsterdam-eth-transfer-assumption",
+              "name": "glamsterdam-eth-transfer-assumption",
+              "shortDescription": {
+                "text": "glamsterdam-eth-transfer-assumption"
+              },
+              "fullDescription": {
+                "text": "Glamsterdam readiness heuristic: glamsterdam-eth-transfer-assumption"
+              },
+              "helpUri": "https://github.com/PXLabs-code/AISolidityAuditor#esp-wishlist-alignment",
+              "properties": {
+                "tool": "AISolidityAuditor-GlamsterdamReadiness",
+                "source": "readiness-heuristic",
+                "security-severity": "3.0",
+                "tags": [
+                  "security",
+                  "readiness-heuristic",
+                  "low",
+                  "glamsterdam",
+                  "gas-repricing",
+                  "evm-compatibility",
+                  "eth-transfer-logs",
+                  "contract-size"
+                ]
+              }
+            },
+            {
+              "id": "glamsterdam-block-context",
+              "name": "glamsterdam-block-context",
+              "shortDescription": {
+                "text": "glamsterdam-block-context"
+              },
+              "fullDescription": {
+                "text": "Glamsterdam readiness heuristic: glamsterdam-block-context"
+              },
+              "helpUri": "https://github.com/PXLabs-code/AISolidityAuditor#esp-wishlist-alignment",
+              "properties": {
+                "tool": "AISolidityAuditor-GlamsterdamReadiness",
+                "source": "readiness-heuristic",
+                "security-severity": "1.0",
+                "tags": [
+                  "security",
+                  "readiness-heuristic",
+                  "informational",
+                  "glamsterdam",
+                  "gas-repricing",
+                  "evm-compatibility",
+                  "eth-transfer-logs",
+                  "contract-size"
+                ]
+              }
+            },
+            {
+              "id": "glamsterdam-contract-size-watch",
+              "name": "glamsterdam-contract-size-watch",
+              "shortDescription": {
+                "text": "glamsterdam-contract-size-watch"
+              },
+              "fullDescription": {
+                "text": "Glamsterdam readiness heuristic: glamsterdam-contract-size-watch"
+              },
+              "helpUri": "https://github.com/PXLabs-code/AISolidityAuditor#esp-wishlist-alignment",
+              "properties": {
+                "tool": "AISolidityAuditor-GlamsterdamReadiness",
+                "source": "readiness-heuristic",
+                "security-severity": "1.0",
+                "tags": [
+                  "security",
+                  "readiness-heuristic",
+                  "informational",
+                  "glamsterdam",
+                  "gas-repricing",
+                  "evm-compatibility",
+                  "eth-transfer-logs",
+                  "contract-size"
+                ]
+              }
+            },
+            {
+              "id": "glamsterdam-gas-sensitive-loop",
+              "name": "glamsterdam-gas-sensitive-loop",
+              "shortDescription": {
+                "text": "glamsterdam-gas-sensitive-loop"
+              },
+              "fullDescription": {
+                "text": "Glamsterdam readiness heuristic: glamsterdam-gas-sensitive-loop"
+              },
+              "helpUri": "https://github.com/PXLabs-code/AISolidityAuditor#esp-wishlist-alignment",
+              "properties": {
+                "tool": "AISolidityAuditor-GlamsterdamReadiness",
+                "source": "readiness-heuristic",
+                "security-severity": "1.0",
+                "tags": [
+                  "security",
+                  "readiness-heuristic",
+                  "informational",
+                  "glamsterdam",
+                  "gas-repricing",
+                  "evm-compatibility",
+                  "eth-transfer-logs",
+                  "contract-size"
+                ]
+              }
+            },
+            {
+              "id": "glamsterdam-low-level-evm",
+              "name": "glamsterdam-low-level-evm",
+              "shortDescription": {
+                "text": "glamsterdam-low-level-evm"
+              },
+              "fullDescription": {
+                "text": "Glamsterdam readiness heuristic: glamsterdam-low-level-evm"
+              },
+              "helpUri": "https://github.com/PXLabs-code/AISolidityAuditor#esp-wishlist-alignment",
+              "properties": {
+                "tool": "AISolidityAuditor-GlamsterdamReadiness",
+                "source": "readiness-heuristic",
+                "security-severity": "1.0",
+                "tags": [
+                  "security",
+                  "readiness-heuristic",
+                  "informational",
+                  "glamsterdam",
+                  "gas-repricing",
+                  "evm-compatibility",
+                  "eth-transfer-logs",
+                  "contract-size"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "glamsterdam-eth-transfer-assumption",
+          "level": "note",
+          "message": {
+            "text": "Native ETH transfer assumption. Review ETH transfer assumptions against proposed native ETH transfer logs and any gas repricing that may affect transfer-style patterns."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 49
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Low",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 47,
+            "source_end_line": 51
+          }
+        },
+        {
+          "ruleId": "glamsterdam-eth-transfer-assumption",
+          "level": "note",
+          "message": {
+            "text": "Native ETH transfer assumption. Review ETH transfer assumptions against proposed native ETH transfer logs and any gas repricing that may affect transfer-style patterns."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 113
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Low",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 111,
+            "source_end_line": 115
+          }
+        },
+        {
+          "ruleId": "glamsterdam-eth-transfer-assumption",
+          "level": "note",
+          "message": {
+            "text": "Native ETH transfer assumption. Review ETH transfer assumptions against proposed native ETH transfer logs and any gas repricing that may affect transfer-style patterns."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 254
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Low",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 252,
+            "source_end_line": 256
+          }
+        },
+        {
+          "ruleId": "glamsterdam-eth-transfer-assumption",
+          "level": "note",
+          "message": {
+            "text": "Native ETH transfer assumption. Review ETH transfer assumptions against proposed native ETH transfer logs and any gas repricing that may affect transfer-style patterns."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 341
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Low",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 339,
+            "source_end_line": 343
+          }
+        },
+        {
+          "ruleId": "glamsterdam-eth-transfer-assumption",
+          "level": "note",
+          "message": {
+            "text": "Native ETH transfer assumption. Review ETH transfer assumptions against proposed native ETH transfer logs and any gas repricing that may affect transfer-style patterns."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 529
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Low",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 527,
+            "source_end_line": 531
+          }
+        },
+        {
+          "ruleId": "glamsterdam-eth-transfer-assumption",
+          "level": "note",
+          "message": {
+            "text": "Native ETH transfer assumption. Review ETH transfer assumptions against proposed native ETH transfer logs and any gas repricing that may affect transfer-style patterns."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC6909.t.sol"
+                },
+                "region": {
+                  "startLine": 50
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Low",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 48,
+            "source_end_line": 52
+          }
+        },
+        {
+          "ruleId": "glamsterdam-eth-transfer-assumption",
+          "level": "note",
+          "message": {
+            "text": "Native ETH transfer assumption. Review ETH transfer assumptions against proposed native ETH transfer logs and any gas repricing that may affect transfer-style patterns."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC6909.t.sol"
+                },
+                "region": {
+                  "startLine": 212
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Low",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 210,
+            "source_end_line": 214
+          }
+        },
+        {
+          "ruleId": "glamsterdam-eth-transfer-assumption",
+          "level": "note",
+          "message": {
+            "text": "Native ETH transfer assumption. Review ETH transfer assumptions against proposed native ETH transfer logs and any gas repricing that may affect transfer-style patterns."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC6909.t.sol"
+                },
+                "region": {
+                  "startLine": 311
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Low",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 309,
+            "source_end_line": 313
+          }
+        },
+        {
+          "ruleId": "glamsterdam-eth-transfer-assumption",
+          "level": "note",
+          "message": {
+            "text": "Native ETH transfer assumption. Review ETH transfer assumptions against proposed native ETH transfer logs and any gas repricing that may affect transfer-style patterns."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC6909.t.sol"
+                },
+                "region": {
+                  "startLine": 326
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Low",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 324,
+            "source_end_line": 328
+          }
+        },
+        {
+          "ruleId": "glamsterdam-eth-transfer-assumption",
+          "level": "note",
+          "message": {
+            "text": "Native ETH transfer assumption. Review ETH transfer assumptions against proposed native ETH transfer logs and any gas repricing that may affect transfer-style patterns."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC6909.t.sol"
+                },
+                "region": {
+                  "startLine": 331
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Low",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 329,
+            "source_end_line": 333
+          }
+        },
+        {
+          "ruleId": "glamsterdam-eth-transfer-assumption",
+          "level": "note",
+          "message": {
+            "text": "Native ETH transfer assumption. Review ETH transfer assumptions against proposed native ETH transfer logs and any gas repricing that may affect transfer-style patterns."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/SafeTransferLib.t.sol"
+                },
+                "region": {
+                  "startLine": 571
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Low",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 569,
+            "source_end_line": 573
+          }
+        },
+        {
+          "ruleId": "glamsterdam-eth-transfer-assumption",
+          "level": "note",
+          "message": {
+            "text": "Native ETH transfer assumption. Review ETH transfer assumptions against proposed native ETH transfer logs and any gas repricing that may affect transfer-style patterns."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/CREATE3.sol"
+                },
+                "region": {
+                  "startLine": 54
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Low",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 52,
+            "source_end_line": 56
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 100
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 98,
+            "source_end_line": 102
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 105
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 103,
+            "source_end_line": 107
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 148
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 146,
+            "source_end_line": 150
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 153
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 151,
+            "source_end_line": 155
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 166
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 164,
+            "source_end_line": 168
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 171
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 169,
+            "source_end_line": 173
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 175
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 173,
+            "source_end_line": 177
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 190
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 188,
+            "source_end_line": 192
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 204
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 202,
+            "source_end_line": 206
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 209
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 207,
+            "source_end_line": 211
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 210
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 208,
+            "source_end_line": 212
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 300
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 298,
+            "source_end_line": 302
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 385
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 383,
+            "source_end_line": 387
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 411
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 409,
+            "source_end_line": 413
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 436
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 434,
+            "source_end_line": 438
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC20.t.sol"
+                },
+                "region": {
+                  "startLine": 461
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 459,
+            "source_end_line": 463
+          }
+        },
+        {
+          "ruleId": "glamsterdam-block-context",
+          "level": "note",
+          "message": {
+            "text": "Block context dependency. Review block context assumptions as Glamsterdam candidates include protocol-level changes such as ePBS and Block-Level Access Lists."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "tokens/ERC20.sol"
+                },
+                "region": {
+                  "startLine": 125
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 123,
+            "source_end_line": 127
+          }
+        },
+        {
+          "ruleId": "glamsterdam-contract-size-watch",
+          "level": "note",
+          "message": {
+            "text": "Large Solidity source file. Review contract-size assumptions against Glamsterdam max contract size discussions."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low"
+          }
+        },
+        {
+          "ruleId": "glamsterdam-contract-size-watch",
+          "level": "note",
+          "message": {
+            "text": "Large Solidity source file. Review contract-size assumptions against Glamsterdam max contract size discussions."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC721.t.sol"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low"
+          }
+        },
+        {
+          "ruleId": "glamsterdam-contract-size-watch",
+          "level": "note",
+          "message": {
+            "text": "Large Solidity source file. Review contract-size assumptions against Glamsterdam max contract size discussions."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/SafeTransferLib.t.sol"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low"
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1134
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1132,
+            "source_end_line": 1136
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1159
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1157,
+            "source_end_line": 1161
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1188
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1186,
+            "source_end_line": 1190
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1208
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1206,
+            "source_end_line": 1210
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1226
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1224,
+            "source_end_line": 1228
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1392
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1390,
+            "source_end_line": 1394
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1430
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1428,
+            "source_end_line": 1432
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1468
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1466,
+            "source_end_line": 1470
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1512
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1510,
+            "source_end_line": 1514
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1556
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1554,
+            "source_end_line": 1558
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1615
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1613,
+            "source_end_line": 1617
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1643
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1641,
+            "source_end_line": 1645
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1671
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1669,
+            "source_end_line": 1673
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1699
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1697,
+            "source_end_line": 1701
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1741
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1739,
+            "source_end_line": 1743
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 880
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 878,
+            "source_end_line": 882
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 895
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 893,
+            "source_end_line": 897
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 914
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 912,
+            "source_end_line": 916
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/FixedPointMathLib.t.sol"
+                },
+                "region": {
+                  "startLine": 291
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 289,
+            "source_end_line": 293
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/FixedPointMathLib.t.sol"
+                },
+                "region": {
+                  "startLine": 306
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 304,
+            "source_end_line": 308
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/LibString.t.sol"
+                },
+                "region": {
+                  "startLine": 130
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 128,
+            "source_end_line": 132
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/LibString.t.sol"
+                },
+                "region": {
+                  "startLine": 135
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 133,
+            "source_end_line": 137
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 935
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 933,
+            "source_end_line": 937
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/utils/DSTestPlus.sol"
+                },
+                "region": {
+                  "startLine": 143
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 141,
+            "source_end_line": 145
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 979
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 977,
+            "source_end_line": 981
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "tokens/ERC1155.sol"
+                },
+                "region": {
+                  "startLine": 93
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 91,
+            "source_end_line": 95
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "tokens/ERC1155.sol"
+                },
+                "region": {
+                  "startLine": 131
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 129,
+            "source_end_line": 133
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "tokens/ERC1155.sol"
+                },
+                "region": {
+                  "startLine": 181
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 179,
+            "source_end_line": 183
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "tokens/ERC1155.sol"
+                },
+                "region": {
+                  "startLine": 211
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 209,
+            "source_end_line": 213
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 996
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 994,
+            "source_end_line": 998
+          }
+        },
+        {
+          "ruleId": "glamsterdam-gas-sensitive-loop",
+          "level": "note",
+          "message": {
+            "text": "Gas-sensitive loop. Review loop bounds and gas sensitivity against Glamsterdam gas repricing proposals."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/ERC1155.t.sol"
+                },
+                "region": {
+                  "startLine": 1111
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 1109,
+            "source_end_line": 1113
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/DSTestPlus.t.sol"
+                },
+                "region": {
+                  "startLine": 60
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 58,
+            "source_end_line": 62
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SignedWadMath.sol"
+                },
+                "region": {
+                  "startLine": 52
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 50,
+            "source_end_line": 54
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SignedWadMath.sol"
+                },
+                "region": {
+                  "startLine": 60
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 58,
+            "source_end_line": 62
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SignedWadMath.sol"
+                },
+                "region": {
+                  "startLine": 86
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 84,
+            "source_end_line": 88
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SignedWadMath.sol"
+                },
+                "region": {
+                  "startLine": 146
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 144,
+            "source_end_line": 148
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SignedWadMath.sol"
+                },
+                "region": {
+                  "startLine": 175
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 173,
+            "source_end_line": 177
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SignedWadMath.sol"
+                },
+                "region": {
+                  "startLine": 212
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 210,
+            "source_end_line": 214
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SignedWadMath.sol"
+                },
+                "region": {
+                  "startLine": 241
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 239,
+            "source_end_line": 243
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/LibString.t.sol"
+                },
+                "region": {
+                  "startLine": 66
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 64,
+            "source_end_line": 68
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/LibString.t.sol"
+                },
+                "region": {
+                  "startLine": 86
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 84,
+            "source_end_line": 88
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/LibString.t.sol"
+                },
+                "region": {
+                  "startLine": 99
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 97,
+            "source_end_line": 101
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/LibString.t.sol"
+                },
+                "region": {
+                  "startLine": 111
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 109,
+            "source_end_line": 113
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/utils/DSTestPlus.sol"
+                },
+                "region": {
+                  "startLine": 20
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 18,
+            "source_end_line": 22
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/utils/weird-tokens/ReturnsGarbageToken.sol"
+                },
+                "region": {
+                  "startLine": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 57,
+            "source_end_line": 61
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/utils/weird-tokens/ReturnsGarbageToken.sol"
+                },
+                "region": {
+                  "startLine": 77
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 75,
+            "source_end_line": 79
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/utils/weird-tokens/ReturnsGarbageToken.sol"
+                },
+                "region": {
+                  "startLine": 103
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 101,
+            "source_end_line": 105
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/utils/weird-tokens/ReturnsTooLittleToken.sol"
+                },
+                "region": {
+                  "startLine": 47
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 45,
+            "source_end_line": 49
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/utils/weird-tokens/ReturnsTooLittleToken.sol"
+                },
+                "region": {
+                  "startLine": 54
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 52,
+            "source_end_line": 56
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/utils/weird-tokens/ReturnsTooLittleToken.sol"
+                },
+                "region": {
+                  "startLine": 65
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 63,
+            "source_end_line": 67
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/utils/weird-tokens/ReturnsTooMuchToken.sol"
+                },
+                "region": {
+                  "startLine": 51
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 49,
+            "source_end_line": 53
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/utils/weird-tokens/ReturnsTooMuchToken.sol"
+                },
+                "region": {
+                  "startLine": 68
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 66,
+            "source_end_line": 70
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test/utils/weird-tokens/ReturnsTooMuchToken.sol"
+                },
+                "region": {
+                  "startLine": 93
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 91,
+            "source_end_line": 95
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/CREATE3.sol"
+                },
+                "region": {
+                  "startLine": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 44,
+            "source_end_line": 48
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/FixedPointMathLib.sol"
+                },
+                "region": {
+                  "startLine": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 40,
+            "source_end_line": 44
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/FixedPointMathLib.sol"
+                },
+                "region": {
+                  "startLine": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 57,
+            "source_end_line": 61
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/FixedPointMathLib.sol"
+                },
+                "region": {
+                  "startLine": 77
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 75,
+            "source_end_line": 79
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/FixedPointMathLib.sol"
+                },
+                "region": {
+                  "startLine": 166
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 164,
+            "source_end_line": 168
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/FixedPointMathLib.sol"
+                },
+                "region": {
+                  "startLine": 231
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 229,
+            "source_end_line": 233
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/FixedPointMathLib.sol"
+                },
+                "region": {
+                  "startLine": 240
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 238,
+            "source_end_line": 242
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/FixedPointMathLib.sol"
+                },
+                "region": {
+                  "startLine": 249
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 247,
+            "source_end_line": 251
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/LibString.sol"
+                },
+                "region": {
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 13,
+            "source_end_line": 17
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/LibString.sol"
+                },
+                "region": {
+                  "startLine": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 29,
+            "source_end_line": 33
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/MerkleProofLib.sol"
+                },
+                "region": {
+                  "startLine": 14
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 12,
+            "source_end_line": 16
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SSTORE2.sol"
+                },
+                "region": {
+                  "startLine": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 36,
+            "source_end_line": 40
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SSTORE2.sol"
+                },
+                "region": {
+                  "startLine": 84
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 82,
+            "source_end_line": 86
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SafeTransferLib.sol"
+                },
+                "region": {
+                  "startLine": 18
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 16,
+            "source_end_line": 20
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SafeTransferLib.sol"
+                },
+                "region": {
+                  "startLine": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 37,
+            "source_end_line": 41
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SafeTransferLib.sol"
+                },
+                "region": {
+                  "startLine": 71
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 69,
+            "source_end_line": 73
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SafeTransferLib.sol"
+                },
+                "region": {
+                  "startLine": 102
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 100,
+            "source_end_line": 104
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SignedWadMath.sol"
+                },
+                "region": {
+                  "startLine": 11
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 9,
+            "source_end_line": 13
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SignedWadMath.sol"
+                },
+                "region": {
+                  "startLine": 22
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 20,
+            "source_end_line": 24
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SignedWadMath.sol"
+                },
+                "region": {
+                  "startLine": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 31,
+            "source_end_line": 35
+          }
+        },
+        {
+          "ruleId": "glamsterdam-low-level-evm",
+          "level": "note",
+          "message": {
+            "text": "Low-level EVM usage. Review low-level EVM assumptions against proposed opcode and EVM behavior changes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "utils/SignedWadMath.sol"
+                },
+                "region": {
+                  "startLine": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "severity": "Informational",
+            "source": "readiness-heuristic",
+            "tool": "AISolidityAuditor-GlamsterdamReadiness",
+            "ai_success": false,
+            "manual_review_required": true,
+            "ai_confidence": "low",
+            "source_start_line": 40,
+            "source_end_line": 44
+          }
+        }
+      ]
+    }
+  ]
+}

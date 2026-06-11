@@ -10,10 +10,18 @@ inputs:
     description: Anthropic API key for Claude explanations.
     required: false
     default: ""
+  deepseek_api_key:
+    description: DeepSeek API key for DeepSeek explanations.
+    required: false
+    default: ""
   ai_provider:
-    description: AI provider to use: openai or claude.
+    description: AI provider to use: openai, claude, or deepseek.
     required: false
     default: openai
+  mode:
+    description: Audit mode. Use standard or glamsterdam-readiness.
+    required: false
+    default: standard
   project_path:
     description: Solidity project path relative to the caller workspace.
     required: false
@@ -30,6 +38,26 @@ inputs:
     description: Post a truncated Markdown report as a pull request comment.
     required: false
     default: "false"
+  fail_on_high:
+    description: Fail the workflow when one or more High findings are present.
+    required: false
+    default: "false"
+  fail_on_medium:
+    description: Fail the workflow when one or more Medium findings are present.
+    required: false
+    default: "false"
+  max_ai_findings:
+    description: Maximum number of findings to send for assistive AI explanation.
+    required: false
+    default: "20"
+  include_informational:
+    description: Include Informational and Optimization findings in findings JSON, Markdown, and SARIF.
+    required: false
+    default: "true"
+  sarif_category:
+    description: Optional SARIF category used by GitHub code scanning.
+    required: false
+    default: ""
 
 runs:
   using: composite
@@ -59,7 +87,13 @@ runs:
           --output-dir "$GITHUB_WORKSPACE/${{ inputs.output_dir }}" \
           --ai-provider "${{ inputs.ai_provider }}" \
           --openai-api-key "${{ inputs.openai_api_key }}" \
-          --anthropic-api-key "${{ inputs.anthropic_api_key }}"
+          --anthropic-api-key "${{ inputs.anthropic_api_key }}" \
+          --deepseek-api-key "${{ inputs.deepseek_api_key }}" \
+          --mode "${{ inputs.mode }}" \
+          --max-ai-findings "${{ inputs.max_ai_findings }}" \
+          --include-informational "${{ inputs.include_informational }}" \
+          --fail-on-high "${{ inputs.fail_on_high }}" \
+          --fail-on-medium "${{ inputs.fail_on_medium }}"
 
     - name: Upload audit artifacts
       uses: actions/upload-artifact@v4
@@ -71,11 +105,21 @@ runs:
           ${{ inputs.output_dir }}/findings.json
           ${{ inputs.output_dir }}/audit-results.sarif
 
+    - name: Upload Glamsterdam readiness artifacts
+      if: ${{ inputs.mode == 'glamsterdam-readiness' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: aisolidityauditor-glamsterdam-readiness
+        path: |
+          ${{ inputs.output_dir }}/glamsterdam-readiness-report.md
+          ${{ inputs.output_dir }}/glamsterdam-findings.json
+
     - name: Upload SARIF
       if: ${{ inputs.upload_sarif == 'true' }}
       uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: ${{ inputs.output_dir }}/audit-results.sarif
+        category: ${{ inputs.sarif_category }}
 
     - name: Comment on pull request
       if: ${{ inputs.comment_on_pr == 'true' && github.event_name == 'pull_request' }}

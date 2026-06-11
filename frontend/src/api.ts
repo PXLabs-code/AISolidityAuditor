@@ -71,7 +71,7 @@ const API_BASE = "/api";
 export async function createAudit(
   file: File,
   apiKey?: string,
-  aiProvider?: "openai" | "claude"
+  aiProvider?: "openai" | "claude" | "deepseek"
 ): Promise<{ task_id: string }> {
   const form = new FormData();
   form.append("file", file);

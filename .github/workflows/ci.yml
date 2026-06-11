@@ -24,6 +24,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
 
+      - name: Install solc
+        run: |
+          sudo curl -fsSL https://github.com/ethereum/solidity/releases/download/v0.8.20/solc-static-linux -o /usr/local/bin/solc
+          sudo chmod +x /usr/local/bin/solc
+
       - name: Ruff lint
         run: ruff check app tests
 

@@ -20,6 +20,9 @@ class Settings(BaseSettings):
     openai_model: str = "gpt-4o-mini"
     anthropic_api_key: str = ""
     claude_model: str = "claude-3-5-haiku-latest"
+    deepseek_api_key: str = ""
+    deepseek_base_url: str = "https://api.deepseek.com/v1"
+    deepseek_model: str = "deepseek-chat"
     cors_origins: str = "http://localhost:5173,http://localhost:3000"
 
 

@@ -1,34 +1,86 @@
-# Grant one-pager
+# Ethereum grant one-pager
+
+## Project
+
+**Glamsterdam Solidity Readiness Triage Toolkit** extends AISolidityAuditor, an open-source Solidity security triage assistant. The Glamsterdam mode helps Ethereum developers review source patterns that may need attention as Glamsterdam candidates evolve.
+
+The MVP already runs Slither, preserves raw analyzer output, emits SARIF, and produces separate readiness artifacts for gas, EVM, native ETH transfer logging, block context, and contract-size watch points. It is not a formal audit or a protocol compatibility guarantee. Every result requires manual review.
+
+## ESP Wishlist alignment
+
+This proposal targets the current ESP Wishlist item **Glamsterdam Grants Round**. That round asks for work that helps the Ethereum community prepare for and adapt to Glamsterdam, including developer tooling updates, impact analysis tooling, monitoring tooling, and data-driven research.
+
+This project fits as developer tooling and impact-analysis support for Solidity maintainers.
 
 ## Problem
 
-Slither is widely used in the Ethereum ecosystem, but its output targets security experts. Small teams struggle to understand findings and act on them, so vulnerabilities may still reach mainnet.
+Protocol upgrades can affect assumptions embedded in contracts and developer workflows. Many small teams do not have an upgrade-readiness checklist or CI artifact that flags gas-sensitive patterns, low-level EVM usage, ETH transfer assumptions, or block context dependencies for review.
 
-## Solution
+Raw static analysis is useful, but it does not package upgrade-readiness prompts into a reviewer-friendly report and SARIF workflow with clean evidence boundaries.
 
-**AISolidityAuditor** — an open-source, self-hostable web platform:
+## Current base (MVP already shipped)
 
-1. Upload a Solidity project ZIP
-2. Run Slither automatically
-3. AI translates each finding into readable English (problem, impact, fix)
-4. Generate a Markdown security triage report automatically
+AISolidityAuditor already provides:
 
-## Impact
+- FastAPI + React self-hosted web app.
+- Reusable GitHub Action with `mode: glamsterdam-readiness`.
+- Slither JSON preservation and Slither-only `audit-report.md` / `findings.json`.
+- Separate `glamsterdam-readiness-report.md` and `glamsterdam-findings.json`.
+- Combined SARIF with tool/source metadata for Slither vs readiness heuristics.
+- 30-fixture CI evaluation corpus.
+- Assistive AI explanations that always require manual review.
+- Docker-based verification commands and sandbox documentation.
 
-- Lowers the barrier to smart contract security self-checks
-- Complements the official Slither ecosystem without reinventing analysis
-- MIT licensed, Docker one-command deploy, no vendor lock-in
+Grant funding is requested to validate, harden, demonstrate, and release this MVP for real ecosystem use—not to build the initial mode from scratch.
 
-## Open source
+## Proposed grant scope: 6-8 weeks
 
-- Public GitHub repository
-- MIT License
-- Full docs: architecture, threat model, known limitations
-- Sample contracts and demo recording
+1. **Harden and validate Glamsterdam readiness mode**
+   - Lock evidence boundaries between Slither and readiness heuristics in reports, JSON, and SARIF.
+   - Add end-to-end Action tests and CI validation for readiness artifact generation.
+   - Document mode usage, limitations, and reviewer-facing evidence boundaries.
 
-## Roadmap (post-MVP)
+2. **Run two public repo demos**
+   - Run `mode: glamsterdam-readiness` on 2 public Solidity repositories.
+   - Publish demo notes with commit SHA, setup assumptions, Slither counts, readiness counts, SARIF tags, and artifacts.
 
-1. GitHub Action for PR audits
-2. Foundry/Hardhat template support
-3. Multiple models / local LLM (Ollama)
-4. Etherscan contract address import
+3. **Improve heuristic precision and false-positive handling**
+   - Continue reducing comment/string false positives and document detector-specific guidance.
+   - Expand readiness evaluation fixtures and benchmark notes.
+
+4. **Publish benchmark notes and demo artifacts**
+   - Publish benchmark comparisons and real-project demo artifacts for grant reviewers.
+   - Record Foundry/Hardhat/remapping limitations transparently.
+
+5. **Prepare tagged Action release**
+   - Publish a tagged `AISolidityAuditor-action@v1` repository and version.
+   - Finalize release notes, usage docs, and maintenance expectations.
+
+## Budget request
+
+Requested budget: **USD 10,000-15,000 equivalent**.
+
+Suggested allocation:
+
+- Hardening, validation, and evidence-boundary work: 25%
+- Heuristic precision and fixture/benchmark coverage: 20%
+- Two public repo demos and published artifacts: 30%
+- Tagged Action release and documentation: 15%
+- Maintenance buffer: 10%
+
+## Success metrics
+
+- Action supports `mode: glamsterdam-readiness` with end-to-end CI coverage.
+- `audit-report.md` and `findings.json` contain Slither evidence only.
+- Readiness report and JSON contain readiness heuristics only.
+- SARIF merges both sources with distinct tool/source metadata and Glamsterdam tags on readiness rules only.
+- 30 existing Solidity fixtures continue to pass.
+- At least 2 public Solidity repositories have documented readiness demo runs.
+- Tagged Action release is published.
+
+## Risks and mitigations
+
+- **Glamsterdam EIPs may change**: findings are conservative readiness prompts, and docs explicitly avoid compatibility guarantees.
+- **False confidence**: Slither output stays separate; readiness heuristics are labeled explicitly and require manual review.
+- **Over-broad heuristics**: checks are documented as review triggers, not vulnerability claims.
+- **Complex project compatibility**: demo notes record setup assumptions and limitations instead of hiding failures.

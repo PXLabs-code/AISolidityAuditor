@@ -17,7 +17,9 @@ Strict requirements:
 2. When uncertain, explicitly state "manual review required"
 3. Write in English; technical terms (e.g. reentrancy) may remain as-is
 4. Use the source context as evidence when it is present
-5. Respond with valid JSON only; do not wrap in markdown code blocks"""
+5. Treat your output as assistive triage, not an audit conclusion
+6. Always set manual_review_required=true
+7. Respond with valid JSON only; do not wrap in markdown code blocks"""
 
 USER_PROMPT_TEMPLATE = """Explain the following Slither security finding:
 
@@ -36,7 +38,7 @@ Reply in JSON with these fields:
 - impact: potential impact
 - recommendation: concrete fix guidance
 - confidence: one of "low", "medium", "high"
-- manual_review_required: boolean"""
+- manual_review_required: boolean, always true"""
 
 STOPWORDS = {
     "the",
@@ -132,7 +134,7 @@ def _explanation_from_json(content: str, finding: Finding, provider: str) -> AIE
         recommendation=str(parsed.get("recommendation", "")).strip(),
         ai_success=True,
         provider=provider,
-        manual_review_required=bool(parsed.get("manual_review_required", not finding.source_context)),
+        manual_review_required=True,
         confidence=confidence,
     )
 
@@ -228,6 +230,41 @@ class OpenAIProvider(BaseAIProvider):
             return _explanation_from_json(content, finding, self.name)
 
 
+class DeepSeekProvider(BaseAIProvider):
+    name = "deepseek"
+
+    def configured(self, api_key: str) -> bool:
+        return bool(api_key or settings.deepseek_api_key)
+
+    async def explain(self, finding: Finding, api_key: str) -> AIExplanation:
+        key = api_key or settings.deepseek_api_key
+        if not key:
+            raise AIProviderError("No DeepSeek API key configured")
+
+        url = settings.deepseek_base_url.rstrip("/") + "/chat/completions"
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            response = await client.post(
+                url,
+                headers={
+                    "Authorization": f"Bearer {key}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": settings.deepseek_model,
+                    "messages": [
+                        {"role": "system", "content": SYSTEM_PROMPT},
+                        {"role": "user", "content": _finding_prompt(finding)},
+                    ],
+                    "temperature": 0.2,
+                    "response_format": {"type": "json_object"},
+                },
+            )
+            response.raise_for_status()
+            data = response.json()
+            content = data["choices"][0]["message"]["content"]
+            return _explanation_from_json(content, finding, self.name)
+
+
 class ClaudeProvider(BaseAIProvider):
     name = "claude"
 
@@ -279,6 +316,7 @@ class AIService:
         self.providers: dict[str, BaseAIProvider] = {
             "openai": OpenAIProvider(),
             "claude": ClaudeProvider(),
+            "deepseek": DeepSeekProvider(),
         }
 
     def get_provider(self, provider_name: Optional[str] = None) -> BaseAIProvider:

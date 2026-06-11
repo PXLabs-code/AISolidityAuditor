@@ -8,8 +8,8 @@ contract SelfdestructFixture {
         owner = payable(msg.sender);
     }
 
-    function destroy() external {
-        require(msg.sender == owner, "not owner");
+    function destroy(address payable recipient) external {
+        owner = recipient;
         selfdestruct(owner);
     }
 }

@@ -52,6 +52,10 @@ def build_summary(findings: list[Finding]) -> AuditSummary:
     return summary
 
 
+def _is_readiness_heuristic(finding: Finding) -> bool:
+    return finding.source == "readiness-heuristic"
+
+
 def _append_finding(lines: list[str], finding: Finding, heading_level: int = 3) -> None:
     label = SEVERITY_LABELS.get(finding.severity, finding.severity.value)
     title = finding.ai.title or finding.detector
@@ -63,7 +67,10 @@ def _append_finding(lines: list[str], finding: Finding, heading_level: int = 3) 
     if finding.function:
         lines.append(f"- **Function**: `{finding.function}`")
 
-    lines.append(f"- **Slither finding**: {finding.description}")
+    if _is_readiness_heuristic(finding):
+        lines.append(f"- **Readiness heuristic**: {finding.description}")
+    else:
+        lines.append(f"- **Slither finding**: {finding.description}")
     if finding.source_context:
         location = _location_str(finding)
         lines.append(f"- **Source context**: `{location}`")
@@ -77,7 +84,7 @@ def _append_finding(lines: list[str], finding: Finding, heading_level: int = 3) 
         if finding.ai.provider:
             lines.append(f"- **AI provider**: `{finding.ai.provider}`")
         lines.append(f"- **AI confidence**: `{finding.ai.confidence}`")
-        lines.append(f"- **AI explanation**: {finding.ai.title or finding.detector}")
+        lines.append(f"- **Assistive AI explanation**: {finding.ai.title or finding.detector}")
         lines.append(f"- **Problem**: {finding.ai.problem}")
         lines.append(f"- **Impact**: {finding.ai.impact}")
         lines.append(f"- **Recommendation**: {finding.ai.recommendation}")
@@ -85,19 +92,26 @@ def _append_finding(lines: list[str], finding: Finding, heading_level: int = 3) 
             f"- **Manual review required**: {'Yes' if finding.ai.manual_review_required else 'No'}"
         )
     elif not finding.ai_expanded:
-        lines.append("- **AI explanation**: Not expanded (exceeds AI explanation limit)")
+        lines.append("- **Assistive AI explanation**: Not expanded (exceeds AI explanation limit)")
         lines.append("- **Manual review required**: Yes")
     else:
         if finding.ai.provider:
             lines.append(f"- **AI provider**: `{finding.ai.provider}`")
         if finding.ai.error:
-            lines.append(f"- **AI explanation**: Unavailable ({_inline_text(finding.ai.error)})")
+            lines.append(f"- **Assistive AI explanation**: Unavailable ({_inline_text(finding.ai.error)})")
         else:
-            lines.append("- **AI explanation**: Unavailable")
+            lines.append("- **Assistive AI explanation**: Unavailable")
         lines.append("- **Manual review required**: Yes")
 
-    lines.append(f"- **Slither detector**: `{finding.detector}`")
+    if _is_readiness_heuristic(finding):
+        lines.append(f"- **Heuristic detector**: `{finding.detector}`")
+    else:
+        lines.append(f"- **Slither detector**: `{finding.detector}`")
     lines.append("")
+
+
+def _slither_findings(findings: list[Finding]) -> list[Finding]:
+    return [finding for finding in findings if not _is_readiness_heuristic(finding)]
 
 
 def generate_report(
@@ -105,6 +119,7 @@ def generate_report(
     findings: list[Finding],
     slither_version: str = "unknown",
 ) -> str:
+    findings = _slither_findings(findings)
     summary = meta.summary or build_summary(findings)
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
@@ -194,21 +209,35 @@ def _sarif_level(finding: Finding) -> str:
     return "note"
 
 
-def generate_sarif(findings: list[Finding]) -> dict:
+def generate_sarif(
+    findings: list[Finding],
+    extra_tags: list[str] | None = None,
+    *,
+    readiness_tags: list[str] | None = None,
+) -> dict:
     rules_by_id: dict[str, dict] = {}
     results: list[dict] = []
+    glamsterdam_tags = readiness_tags if readiness_tags is not None else extra_tags or []
 
     for finding in sorted(findings, key=lambda f: (SEVERITY_ORDER.get(f.severity, 99), f.detector, f.id)):
         rule_id = finding.detector or "slither-finding"
-        rules_by_id.setdefault(
-            rule_id,
-            {
+        is_readiness = _is_readiness_heuristic(finding)
+        if is_readiness:
+            rule_tags = [
+                "security",
+                "readiness-heuristic",
+                finding.severity.value.lower(),
+                *glamsterdam_tags,
+            ]
+            rule_doc = {
                 "id": rule_id,
                 "name": rule_id,
                 "shortDescription": {"text": rule_id},
-                "fullDescription": {"text": f"Slither detector: {rule_id}"},
-                "helpUri": f"https://github.com/crytic/slither/wiki/Detector-Documentation#{quote(rule_id)}",
+                "fullDescription": {"text": f"Glamsterdam readiness heuristic: {rule_id}"},
+                "helpUri": "https://github.com/PXLabs-code/AISolidityAuditor#esp-wishlist-alignment",
                 "properties": {
+                    "tool": "AISolidityAuditor-GlamsterdamReadiness",
+                    "source": "readiness-heuristic",
                     "security-severity": {
                         Severity.HIGH: "8.0",
                         Severity.MEDIUM: "5.0",
@@ -216,12 +245,35 @@ def generate_sarif(findings: list[Finding]) -> dict:
                         Severity.INFORMATIONAL: "1.0",
                         Severity.OPTIMIZATION: "0.5",
                     }.get(finding.severity, "1.0"),
-                    "tags": ["security", "slither", finding.severity.value.lower()],
+                    "tags": rule_tags,
                 },
-            },
-        )
+            }
+        else:
+            rule_tags = ["security", "slither", finding.severity.value.lower()]
+            rule_doc = {
+                "id": rule_id,
+                "name": rule_id,
+                "shortDescription": {"text": rule_id},
+                "fullDescription": {"text": f"Slither detector: {rule_id}"},
+                "helpUri": f"https://github.com/crytic/slither/wiki/Detector-Documentation#{quote(rule_id)}",
+                "properties": {
+                    "tool": "Slither",
+                    "source": "slither",
+                    "security-severity": {
+                        Severity.HIGH: "8.0",
+                        Severity.MEDIUM: "5.0",
+                        Severity.LOW: "3.0",
+                        Severity.INFORMATIONAL: "1.0",
+                        Severity.OPTIMIZATION: "0.5",
+                    }.get(finding.severity, "1.0"),
+                    "tags": rule_tags,
+                },
+            }
+        rules_by_id.setdefault(rule_id, rule_doc)
         properties = {
             "severity": finding.severity.value,
+            "source": finding.source,
+            "tool": "AISolidityAuditor-GlamsterdamReadiness" if is_readiness else "Slither",
             "contract": finding.contract,
             "function": finding.function,
             "ai_success": finding.ai.ai_success,

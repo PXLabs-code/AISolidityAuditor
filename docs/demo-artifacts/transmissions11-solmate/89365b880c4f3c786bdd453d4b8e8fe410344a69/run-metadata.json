@@ -1,0 +1,21 @@
+{
+  "demo_id": "transmissions11-solmate",
+  "repo": "https://github.com/transmissions11/solmate",
+  "commit": "89365b880c4f3c786bdd453d4b8e8fe410344a69",
+  "commit_message": "Update LICENSE",
+  "project_path_slither": ".",
+  "project_path_readiness": "src",
+  "mode": "glamsterdam-readiness",
+  "action_workflow": ".github/workflows/real-project-demo.yml",
+  "action_run_url": null,
+  "readiness_findings_total": 106,
+  "readiness_findings_by_detector": {
+    "glamsterdam-gas-sensitive-loop": 31,
+    "glamsterdam-low-level-evm": 43,
+    "glamsterdam-eth-transfer-assumption": 12,
+    "glamsterdam-block-context": 17,
+    "glamsterdam-contract-size-watch": 3
+  },
+  "slither_findings_total": null,
+  "notes": "Readiness artifacts generated locally. Full Slither + Action run metadata is written by the real-project-demo workflow."
+}

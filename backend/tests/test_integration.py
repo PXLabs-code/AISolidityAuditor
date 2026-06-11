@@ -137,3 +137,4 @@ def test_health_reports_ai_provider_configuration(_mock_slither, _mock_solc, cli
     assert details["ai_provider"] == "openai"
     assert "openai_configured" in details
     assert "claude_configured" in details
+    assert "deepseek_configured" in details
