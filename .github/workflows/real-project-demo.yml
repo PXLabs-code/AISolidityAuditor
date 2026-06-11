@@ -61,65 +61,17 @@ jobs:
             --include-informational false
 
       - name: Write demo metadata
+        env:
+          GITHUB_ACTION_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          python - <<'PY'
-          import json
-          from datetime import datetime, timezone
-          from pathlib import Path
-
-          output = Path("${{ env.OUTPUT_DIR }}")
-          findings = json.loads((output / "findings.json").read_text(encoding="utf-8"))
-          readiness = json.loads((output / "glamsterdam-findings.json").read_text(encoding="utf-8"))
-          sarif = json.loads((output / "audit-results.sarif").read_text(encoding="utf-8"))
-          rules = sarif["runs"][0]["tool"]["driver"]["rules"]
-          glamsterdam_rules = [rule for rule in rules if rule["id"].startswith("glamsterdam-")]
-
-          metadata = {
-              "demo_id": "${{ env.DEMO_ID }}",
-              "repo": "https://github.com/transmissions11/solmate",
-              "commit": "${{ env.SOLMATE_COMMIT }}",
-              "project_path": ".",
-              "mode": "glamsterdam-readiness",
-              "action_run_url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
-              "generated_at": datetime.now(timezone.utc).isoformat(),
-              "slither_findings_total": len(findings),
-              "readiness_findings_total": len(readiness),
-              "glamsterdam_sarif_rules": len(glamsterdam_rules),
-          }
-          (output / "run-metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
-
-          readme = f"""# Real-project demo: transmissions11/solmate
-
-## Repository
-
-- **Repo**: `https://github.com/transmissions11/solmate`
-- **Commit SHA**: `{metadata["commit"]}`
-- **Project path**: `.`
-
-## Action run
-
-- **Workflow run**: {metadata["action_run_url"]}
-- **Mode**: `glamsterdam-readiness`
-- **Generated at**: {metadata["generated_at"]}
-
-## Results
-
-- **Slither findings (reported)**: {metadata["slither_findings_total"]}
-- **Glamsterdam readiness findings**: {metadata["readiness_findings_total"]}
-- **Glamsterdam SARIF rules**: {metadata["glamsterdam_sarif_rules"]}
-
-## Artifacts
-
-- `audit-report.md`
-- `findings.json`
-- `slither.json`
-- `audit-results.sarif`
-- `glamsterdam-readiness-report.md`
-- `glamsterdam-findings.json`
-- `run-metadata.json`
-"""
-          (output / "README.md").write_text(readme, encoding="utf-8")
-          PY
+          python scripts/write_demo_metadata.py \
+            --output-dir "$GITHUB_WORKSPACE/${OUTPUT_DIR}" \
+            --demo-id "${DEMO_ID}" \
+            --repo "https://github.com/transmissions11/solmate" \
+            --commit "${SOLMATE_COMMIT}" \
+            --project-path "." \
+            --readiness-path "src" \
+            --action-run-url "${GITHUB_ACTION_RUN_URL}"
 
       - name: Upload demo artifacts
         uses: actions/upload-artifact@v4
